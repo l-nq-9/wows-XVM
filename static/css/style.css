@@ -1,0 +1,80 @@
+body {
+  background-color: #f3f3f3;
+  letter-spacing: 1px;
+  font-size: 0.78rem; }
+
+.notInBattle {
+  display: none; }
+
+.radius {
+  border-radius: 10px; }
+
+.bold {
+  font-weight: bold; }
+
+.class1 {
+  color: #e2041b; }
+
+.class2 {
+  color: #ec6800; }
+
+.class3 {
+  color: #f7c114; }
+
+.class4 {
+  color: #69b076; }
+
+.class5 {
+  color: #007bbb; }
+
+.class6 {
+  color: #674196; }
+
+div#test {
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 0 0 0; }
+  div#test div.table_wrapper {
+    padding: 0 10px;
+    box-shadow: 5px 5px 5px #a3b1c6, -5px -5px 5px #ffffff, inset 5px 5px 5px transparent, inset -5px -5px 5px transparent;
+    margin: 0 auto 20px;
+    width: 78%;
+    min-width: 1345px; }
+    div#test div.table_wrapper table {
+      line-height: 1.4rem;
+      border-collapse: collapse;
+      margin: 0 auto;
+      table-layout: fixed;
+      width: 100%; }
+      div#test div.table_wrapper table thead tr th {
+        padding: 0 8px;
+        font-weight: normal;
+        text-align: left;
+        vertical-align: middle;
+        line-height: 1rem !important; }
+      div#test div.table_wrapper table tbody {
+        box-shadow: 5px 5px 5px transparent, -5px -5px 5px transparent, inset 5px 5px 5px #a3b1c6, inset -5px -5px 5px #ffffff;
+        padding: 8px;
+        margin: 10px; }
+        div#test div.table_wrapper table tbody tr {
+          border-top: 1px #a3b1c6 dotted;
+          padding: 0 10px; }
+          div#test div.table_wrapper table tbody tr:first-child {
+            border: none; }
+            div#test div.table_wrapper table tbody tr:first-child td {
+              padding-top: 10px !important; }
+          div#test div.table_wrapper table tbody tr:last-child td {
+            padding-bottom: 10px !important; }
+          div#test div.table_wrapper table tbody tr td {
+            padding: 1px 8px;
+            overflow: hidden; }
+      div#test div.table_wrapper table .t_name {
+        width: 130px; }
+      div#test div.table_wrapper table .t_num1 {
+        width: 25px; }
+      div#test div.table_wrapper table .t_num {
+        width: 45px; }
+      div#test div.table_wrapper table .t_numW {
+        width: 55px; }
+
+/*# sourceMappingURL=style.css.map */

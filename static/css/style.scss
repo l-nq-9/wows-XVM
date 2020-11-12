@@ -1,0 +1,132 @@
+$main: #f3f3f3;
+$light: #ffffff;
+$dark: #a3b1c6;
+
+$wr1: #e2041b;
+$wr2: #ec6800;
+$wr3: #f7c114;
+$wr4: #69b076;
+$wr5: #007bbb;
+$wr6: #674196;
+
+body{
+    background-color: $main;
+    letter-spacing: 1px;
+    font-size: 0.78rem;
+}
+
+.inBattle{
+    display: block !important;
+}
+
+// Parts
+.none{
+    display: none;
+}
+
+.radius{
+    border-radius: 10px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+// Classes
+.class1{
+    color: $wr1;
+}
+.class2{
+    color: $wr2;
+}
+.class3{
+    color: $wr3;
+}
+.class4{
+    color: $wr4;
+}
+.class5{
+    color: $wr5;
+}
+.class6{
+    color: $wr6;
+}
+
+// Components
+div#test{
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px 0 0 0;
+
+    div.table_wrapper{
+        padding: 0 10px;
+        box-shadow:
+            5px 5px 5px $dark,
+            -5px -5px 5px $light,
+            inset 5px 5px 5px transparent,
+            inset -5px -5px 5px transparent;
+        margin: 0 auto 20px;
+        width: 78%;
+        min-width: 1345px;
+
+        table{
+            line-height: 1.4rem;
+            border-collapse: collapse;
+            margin: 0 auto;
+            table-layout: fixed;
+            width: 100%;
+            // border-spacing: 10px 0;
+            thead{
+                tr{
+                    th{
+                        padding: 0 8px;
+                        font-weight: normal;
+                        text-align: left;
+                        vertical-align: middle;
+                        line-height: 1rem !important;
+                    }
+                }
+            }
+            tbody{
+                box-shadow:
+                5px 5px 5px transparent,
+                -5px -5px 5px transparent,
+                inset 5px 5px 5px $dark,
+                inset -5px -5px 5px $light;
+                padding: 8px;
+                margin: 10px;
+                tr{
+                    border-top: 1px $dark dotted;
+                    padding: 0 10px;
+                    &:first-child{
+                        border: none;
+                        td{
+                            padding-top: 10px !important;
+                        }
+                    }
+                    &:last-child{
+                        td{
+                            padding-bottom: 10px !important;
+                        }
+                    }
+                    td{
+                        padding: 1px 8px;
+                        overflow: hidden;
+                    }
+                }
+            }
+            .t_name{
+                width: 130px;
+            }
+            .t_num1{
+                width: 25px;
+            }
+            .t_num{
+                width: 45px;
+            }
+            .t_numW{
+                width: 55px;
+            }
+        }
+    }
+}
