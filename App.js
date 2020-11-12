@@ -1,5 +1,5 @@
 ///// おのおの指定してくれや /////
-var apikey = "5ebba5888ab0d2e0f04690ea60ac605a";
+var apikey = "";
 var apiurl = "https://api.worldofwarships.asia";
 var wowspath = "C:/Games/World_of_Warships_Asia";
 ////////////////////////////////
