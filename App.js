@@ -121,9 +121,9 @@ app.get("/api/player", function(req, res, next){
 });
 
 app.get("/api/arena", function(req, res, next){
-    var jsonfile = "randomSample.json";
+    // var jsonfile = "randomSample.json";
     // var jsonfile = "coopSample.json";
-    // var jsonfile = wowspath + "/replays/tempArenaInfo.json";
+    var jsonfile = wowspath + "/replays/tempArenaInfo.json";
     // console.log(jsonfile);
 
     var arenajson = {};

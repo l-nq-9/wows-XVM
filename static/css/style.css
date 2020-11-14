@@ -3,7 +3,10 @@ body {
   letter-spacing: 1px;
   font-size: 0.78rem; }
 
-.notInBattle {
+.inBattle {
+  display: block !important; }
+
+.none {
   display: none; }
 
 .radius {

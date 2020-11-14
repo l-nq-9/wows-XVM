@@ -55,7 +55,6 @@ new Vue({
             Promise.all(list)
                 .then( function(result){
                     console.log(result);
-                    console.log("hey");
                 });
         },
         getStats(arenaData){
