@@ -82,36 +82,39 @@ app.get("/api/player", function(req, res, next){
 
             request(options_getstats, function(statserr, statsresponse, statsbody){
 
-                var stats = statsbody.data[pid];
+                // console.log(statsbody);
 
-                if (stats.statistics != null){
-                    player.hidden = "no";
-                    player.battles = stats.statistics.pvp.battles;
-                    player.totalwr = fixing00((stats.statistics.pvp.wins / stats.statistics.pvp.battles) * 100);
-                    player.solowr = fixing00((stats.statistics.pvp_solo.wins / stats.statistics.pvp_solo.battles) * 100);
-                    player.div3wr = fixing00((stats.statistics.pvp_div3.wins / stats.statistics.pvp_div3.battles) * 100);
-                    player.soloratio = fixing0((stats.statistics.pvp_solo.battles / stats.statistics.pvp.battles) * 100);
-                    player.avgdmg = fixing(stats.statistics.pvp.damage_dealt / stats.statistics.pvp.battles);
-                    player.avgkill = fixing00(stats.statistics.pvp.frags / stats.statistics.pvp.battles);
-                    player.survive = fixing0((stats.statistics.pvp.survived_battles / stats.statistics.pvp.battles) * 100);
-                    player.killdeath = fixing00(stats.statistics.pvp.frags / (stats.statistics.pvp.battles - stats.statistics.pvp.survived_battles));    
-                }else{
-                    player.hidden = "yes";
-                }
-                 
-                request(options_getclan, function(clanerr, clanres, clanbody){
-                    
-                    player.clantag = null;
-                    if (clanbody.data[pid] != null){
-                        if (clanbody.data[pid].clan_id != null){
-                            player.clantag = clanbody.data[pid].clan.tag;
-                        }
-                    }                    
+                if (statsbody.status != "error"){
+                    var stats = statsbody.data[pid];
 
-                    player.status = 'ok';
-                    res.json(player);
-                });
+                    if (stats.statistics != null){
+                        player.hidden = "no";
+                        player.battles = stats.statistics.pvp.battles;
+                        player.totalwr = fixing00((stats.statistics.pvp.wins / stats.statistics.pvp.battles) * 100);
+                        player.solowr = fixing00((stats.statistics.pvp_solo.wins / stats.statistics.pvp_solo.battles) * 100);
+                        player.div3wr = fixing00((stats.statistics.pvp_div3.wins / stats.statistics.pvp_div3.battles) * 100);
+                        player.soloratio = fixing0((stats.statistics.pvp_solo.battles / stats.statistics.pvp.battles) * 100);
+                        player.avgdmg = fixing(stats.statistics.pvp.damage_dealt / stats.statistics.pvp.battles);
+                        player.avgkill = fixing00(stats.statistics.pvp.frags / stats.statistics.pvp.battles);
+                        player.survive = fixing0((stats.statistics.pvp.survived_battles / stats.statistics.pvp.battles) * 100);
+                        player.killdeath = fixing00(stats.statistics.pvp.frags / (stats.statistics.pvp.battles - stats.statistics.pvp.survived_battles));    
+                    }else{
+                        player.hidden = "yes";
+                    }
+                     
+                    request(options_getclan, function(clanerr, clanres, clanbody){
+                        
+                        player.clantag = null;
+                        if (clanbody.data[pid] != null){
+                            if (clanbody.data[pid].clan_id != null){
+                                player.clantag = clanbody.data[pid].clan.tag;
+                            }
+                        }                    
     
+                        player.status = 'ok';
+                        res.json(player);
+                    });
+                }    
             });
       
         } //if (player.id != 0){
@@ -123,6 +126,7 @@ app.get("/api/player", function(req, res, next){
 app.get("/api/arena", function(req, res, next){
     // var jsonfile = "randomSample.json";
     // var jsonfile = "coopSample.json";
+    // var jsonfile = "senarioSample.json";
     var jsonfile = wowspath + "/replays/tempArenaInfo.json";
     // console.log(jsonfile);
 

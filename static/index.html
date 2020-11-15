@@ -19,7 +19,7 @@
 
 <body>
 
-    <div id="test" v-bind:class="{ inBattle: inBattle }" class="none">
+    <div id="test" v-bind:class="{ inBattle: inBattle }">
         {{ controller }}
 
         <div class="table_wrapper radius">
@@ -76,14 +76,14 @@
                         <td>{{ stats[1].torpaim }}</td>
                         <td>{{ stats[1].avgdown }}</td>
 
-                        <td :class="getColorWR(stats[0].totalwr)" class="bold">{{ stats[0].totalwr }}</td>
-                        <td>{{ stats[0].battles }}</td>
+                        <td :class="getColorWR(stats[0].totalwr)" class="bold">{{ tellHidden(stats[0].totalwr, stats[0].hidden) }}</td>
+                        <td :class="compareRekisi(stats[0].battles)">{{ stats[0].battles }}</td>
                         <td>{{ stats[0].avgdmg }}</td>
                         <td>{{ stats[0].avgkill }}</td>
                         <td>{{ stats[0].survive }}</td>
                         <td>{{ stats[0].killdeath }}</td>
                         <td :class="getColorWR(stats[0].solowr)" class="bold">{{ stats[0].solowr }}</td>
-                        <td>{{ stats[0].soloratio }}</td>
+                        <td :class="inSoloRatio(stats[0].soloratio)">{{ stats[0].soloratio }}</td>
                         <td :class="getColorWR(stats[0].div3wr)" class="bold">{{ stats[0].div3wr }}</td>
 
                     </tr>
@@ -144,16 +144,16 @@
                         <td>{{ stats[1].torpaim }}</td>
                         <td>{{ stats[1].avgdown }}</td>
 
-                        <td :class="getColorWR(stats[0].totalwr)" class="bold">{{ stats[0].totalwr }}</td>
-                        <td>{{ stats[0].battles }}</td>
+                        <td :class="getColorWR(stats[0].totalwr)" class="bold">{{ tellHidden(stats[0].totalwr, stats[0].hidden) }}</td>
+                        <td :class="compareRekisi(stats[0].battles)">{{ stats[0].battles }}</td>
                         <td>{{ stats[0].avgdmg }}</td>
                         <td>{{ stats[0].avgkill }}</td>
                         <td>{{ stats[0].survive }}</td>
                         <td>{{ stats[0].killdeath }}</td>
                         <td :class="getColorWR(stats[0].solowr)" class="bold">{{ stats[0].solowr }}</td>
-                        <td>{{ stats[0].soloratio }}</td>
+                        <td :class="inSoloRatio(stats[0].soloratio)">{{ stats[0].soloratio }}</td>
                         <td :class="getColorWR(stats[0].div3wr)" class="bold">{{ stats[0].div3wr }}</td>
-
+                        
                     </tr>
                 </tbody>
             </table>

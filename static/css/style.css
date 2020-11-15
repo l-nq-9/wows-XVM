@@ -15,6 +15,9 @@ body {
 .bold {
   font-weight: bold; }
 
+.under {
+  text-decoration: underline; }
+
 .class1 {
   color: #e2041b; }
 

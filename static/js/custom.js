@@ -5,7 +5,8 @@ new Vue({
         all: [],
         allies: [],
         enemies: [],
-        jsonTime: "0000", //0000に意味はない
+        jsonTime: "0000",
+        rekisi: 10000, //初期値は10000. このあと正確な値を取得
     },
     computed:{
         controller(){
@@ -56,6 +57,8 @@ new Vue({
                 .then( function(result){
                     console.log(result);
                 });
+
+            self.get1rekisi();
         },
         getStats(arenaData){
             var self = this;
@@ -131,18 +134,22 @@ new Vue({
             });
         },
         getColorWR: function(value){
-            if	(value < 47) {
-                return 'class1';
-            }else if(value < 49) {
-                return 'class2';
-            }else if(value < 52) {
-                return 'class3';
-            }else if(value < 57) {
-                return 'class4';
-            }else if(value < 65) {
-                return 'class5';
-            }else if(value < 101) {
-                return 'class6';
+            if (value != null){
+                if	(value < 47) {
+                    return 'class1';
+                }else if(value < 49) {
+                    return 'class2';
+                }else if(value < 52) {
+                    return 'class3';
+                }else if(value < 57) {
+                    return 'class4';
+                }else if(value < 65) {
+                    return 'class5';
+                }else if(value < 101) {
+                    return 'class6';
+                }
+            }else{
+                return 'hiddenAccount';
             }
         },
         getClassKanji: function(value){
@@ -157,7 +164,36 @@ new Vue({
             }else if (value == "Submarine"){
                 return "潜";
             }
-        }
+        },
+        tellHidden: function(wr, flag){
+            if (flag != "yes"){
+                return wr;
+            }else{
+                return "Hidden";
+            }
+        },
+        inSoloRatio: function(value){
+            if (value == 100){
+                return "bold under";
+            }else if (value <= 33.33){
+                return "bold";
+            }else{
+                return;
+            }
+        },
+        get1rekisi(){
+            var self = this;
+            var rekisiData = self.getPlayer("rekisi");
+            rekisiData.then( function(rekisiResult){
+                self.rekisi = rekisiResult.battles;
+            });
+        },
+        compareRekisi: function(battles){
+            if (battles >= this.rekisi){
+                return "bold under";
+            }else{
+                return;
+            }
+        },
     },
-
 });
