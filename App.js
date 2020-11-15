@@ -1,11 +1,7 @@
-///// おのおの指定してくれや /////
-var apikey = "";
-var apiurl = "https://api.worldofwarships.asia";
-var wowspath = "C:/Games/World_of_Warships_Asia";
-////////////////////////////////
-
-
-
+require('dotenv').config();
+var apikey = process.env.APIKEY;
+var apiurl = process.env.APIURL;
+var wowspath = process.env.WOWSPATH;
 
 var express = require("express");
 var fs = require("fs");
