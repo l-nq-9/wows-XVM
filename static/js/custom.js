@@ -1,6 +1,7 @@
 new Vue({
     el: "#test",
     data: {
+        polling: 4000,　//ポーリング間隔（ﾐﾘ秒） CPUの負荷とか考えるならおのおの調整してくれや
         inBattle: false,
         all: [],
         allies: [],
@@ -25,7 +26,9 @@ new Vue({
                                     var allLineup = [];
 
                                     for (var i = 0; i<Object.keys(res.data.vehicles).length; i++){
-                                        allLineup.push(res.data.vehicles[i]);
+                                        if (res.data.vehicles[i].id > 0){
+                                            allLineup.push(res.data.vehicles[i]);
+                                        }                         
                                     }
                                     self.sortLineup(allLineup);
 
@@ -38,7 +41,7 @@ new Vue({
                             }
                         })
                 }.bind(this)
-            , 4000)　//ポーリング間隔（ﾐﾘ秒） CPUの負荷とか考えるならおのおの調整してくれや
+            , this.polling)
         },
         
     },
@@ -174,9 +177,9 @@ new Vue({
         },
         inSoloRatio: function(value){
             if (value == 100){
-                return "bold under";
-            }else if (value <= 33.33){
                 return "bold";
+            }else if (value <= 33.33){
+                return "bold under";
             }else{
                 return;
             }
@@ -195,5 +198,23 @@ new Vue({
                 return;
             }
         },
+        checkShirogane: function(aim, shipClass){
+            if (shipClass == "Battleship" && aim >= 32){
+                return "bold under";
+            }else if (shipClass == "Cruiser" && aim >= 40){
+                return "bold under";
+            }else if (shipClass == "Destroyer" && aim >= 50){
+                return "bold under";
+            }else{
+                return;
+            }
+        },
+        checkBot: function(ratio, battles){
+            if (battles >= 10 && ratio <= 16.66){
+                return "bold under";
+            }else{
+                return;
+            }
+        }
     },
 });

@@ -13,10 +13,19 @@ body {
   border-radius: 10px; }
 
 .bold {
-  font-weight: bold; }
+  font-weight: bold !important; }
 
 .under {
-  text-decoration: underline; }
+  text-decoration: underline !important; }
+
+.mildBlack {
+  color: #3d3d3d !important; }
+
+.mildGray {
+  color: #999999 !important; }
+
+.textRight {
+  text-align: right !important; }
 
 .class1 {
   color: #e2041b; }
@@ -41,9 +50,9 @@ div#test {
   margin: 0 auto;
   padding: 16px 0 0 0; }
   div#test div.table_wrapper {
-    padding: 0 10px;
+    padding: 5px 10px 0px;
     box-shadow: 5px 5px 5px #a3b1c6, -5px -5px 5px #ffffff, inset 5px 5px 5px transparent, inset -5px -5px 5px transparent;
-    margin: 0 auto 20px;
+    margin: 0 auto 30px;
     width: 78%;
     min-width: 1345px; }
     div#test div.table_wrapper table {
@@ -52,25 +61,29 @@ div#test {
       margin: 0 auto;
       table-layout: fixed;
       width: 100%; }
-      div#test div.table_wrapper table thead tr th {
-        padding: 0 8px;
-        font-weight: normal;
-        text-align: left;
-        vertical-align: middle;
-        line-height: 1rem !important; }
+      div#test div.table_wrapper table thead tr {
+        border-bottom: 1px #a3b1c6 solid; }
+        div#test div.table_wrapper table thead tr th {
+          padding: 0 8px;
+          font-weight: normal;
+          text-align: left;
+          vertical-align: middle;
+          line-height: 1rem !important; }
       div#test div.table_wrapper table tbody {
-        box-shadow: 5px 5px 5px transparent, -5px -5px 5px transparent, inset 5px 5px 5px #a3b1c6, inset -5px -5px 5px #ffffff;
         padding: 8px;
         margin: 10px; }
         div#test div.table_wrapper table tbody tr {
           border-top: 1px #a3b1c6 dotted;
-          padding: 0 10px; }
+          padding: 0 10px;
+          background-color: #f3f3f3; }
           div#test div.table_wrapper table tbody tr:first-child {
             border: none; }
             div#test div.table_wrapper table tbody tr:first-child td {
-              padding-top: 10px !important; }
+              padding-top: 2px !important; }
           div#test div.table_wrapper table tbody tr:last-child td {
             padding-bottom: 10px !important; }
+          div#test div.table_wrapper table tbody tr:nth-child(2n-1) {
+            background-color: #fafafa; }
           div#test div.table_wrapper table tbody tr td {
             padding: 1px 8px;
             overflow: hidden; }
@@ -82,5 +95,7 @@ div#test {
         width: 45px; }
       div#test div.table_wrapper table .t_numW {
         width: 55px; }
+      div#test div.table_wrapper table .partition {
+        border-left: 1px #a3b1c6 dotted; }
 
 /*# sourceMappingURL=style.css.map */

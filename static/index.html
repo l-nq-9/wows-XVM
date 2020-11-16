@@ -2,19 +2,20 @@
 <html lang="ja">
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>"wows xvm"</title>
+    <title>"wows xvm"</title>
 
-<!-- <link rel="shortcut icon" href="img/favicon.ico"> -->
-<link rel="stylesheet" href="css/reset.css" type="text/css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel="stylesheet" href="css/style.css" type="text/css">
+    <!-- <link rel="shortcut icon" href="img/favicon.ico"> -->
+    <link rel="stylesheet" href="css/reset.css" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+    <script src="https://kit.fontawesome.com/a36d4011d5.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -28,15 +29,15 @@
                 <thead>
                     <tr>
                         <th scope="col" class="t_numW">Clan</th>
-                        <th scope="col" class="t_name">Player</th>
-                        <th scope="col" class="t_name">Ship</th>
+                        <th scope="col" class="t_name bold mildBlack">Player <i class="fas fa-user mildGray"></i></th>
+                        <th scope="col" class="t_name bold mildBlack">Ship <i class="fas fa-ship mildGray"></i></th>
                         <th scope="col" class="t_num1">Tier</th>
                         <th scope="col" class="t_numW"></th>
                         <th scope="col" class="t_num1"></th>
 
-                        <th scope="col" class="bold t_numW">Ship<br />WR</th>
-                        <th scope="col" class="t_num">Battles</th>
-                        <th scope="col" class="t_numW">Dmg</th>
+                        <th scope="col" class="t_numW partition">Ship<br />WR</th>
+                        <th scope="col" class="t_num textRight">Battles</th>
+                        <th scope="col" class="t_numW textRight">Dmg</th>
                         <th scope="col" class="t_num">Kill</th>
                         <th scope="col" class="t_num">生存</th>
                         <th scope="col" class="t_num">K/D</th>
@@ -44,11 +45,10 @@
                         <th scope="col" class="t_num">torp</th>
                         <th scope="col" class="t_num">撃墜</th>
                         
-                        <th scope="col" class="bold t_numW">WR</th>
-                        <th scope="col" class="t_numW">Battles</th>
-                        <th scope="col" class="t_numW">Dmg</th>
+                        <th scope="col" class="t_numW partition bold mildBlack">WR <i class="fas fa-trophy mildGray"></i></th>
+                        <th scope="col" class="t_numW textRight">Battles</th>
+                        <th scope="col" class="t_numW textRight">Dmg</th>
                         <th scope="col" class="t_num">Kill</th>
-                        <th scope="col" class="t_num">生存</th>
                         <th scope="col" class="t_num">K/D</th>
                         <th scope="col" class="t_numW">Solo<br />WR</th>
                         <th scope="col" class="t_num">Solo<br />Ratio</th>
@@ -61,26 +61,25 @@
                         
                         <td>{{ stats[0].clantag }}</td>
                         <td>{{ stats[0].name }}</td>
-                        <td>{{ stats[1].name }}</td>
+                        <td class="bold mildBlack">{{ stats[1].name }}</td>
                         <td>{{ stats[1].tier }}</td>
                         <td>{{ stats[1].nation }}</td>
                         <td>{{ getClassKanji(stats[1].type) }}</td>
 
                         <td :class="getColorWR(stats[1].wr)" class="bold">{{ stats[1].wr }}</td>
-                        <td>{{ stats[1].battles }}</td>
-                        <td>{{ stats[1].avgdmg }}</td>
+                        <td class="textRight">{{ stats[1].battles }}</td>
+                        <td class="textRight">{{ stats[1].avgdmg }}</td>
                         <td>{{ stats[1].avgkill }}</td>
-                        <td>{{ stats[1].survive }}</td>
+                        <td :class="checkBot(stats[1].survive, stats[1].battles)">{{ stats[1].survive }}</td>
                         <td>{{ stats[1].killdeath }}</td>
-                        <td>{{ stats[1].gunaim }}</td>
+                        <td :class="checkShirogane(stats[1].gunaim, stats[1].type)">{{ stats[1].gunaim }}</td>
                         <td>{{ stats[1].torpaim }}</td>
                         <td>{{ stats[1].avgdown }}</td>
 
                         <td :class="getColorWR(stats[0].totalwr)" class="bold">{{ tellHidden(stats[0].totalwr, stats[0].hidden) }}</td>
-                        <td :class="compareRekisi(stats[0].battles)">{{ stats[0].battles }}</td>
-                        <td>{{ stats[0].avgdmg }}</td>
+                        <td :class="compareRekisi(stats[0].battles)"  class="textRight">{{ stats[0].battles }}</td>
+                        <td  class="textRight">{{ stats[0].avgdmg }}</td>
                         <td>{{ stats[0].avgkill }}</td>
-                        <td>{{ stats[0].survive }}</td>
                         <td>{{ stats[0].killdeath }}</td>
                         <td :class="getColorWR(stats[0].solowr)" class="bold">{{ stats[0].solowr }}</td>
                         <td :class="inSoloRatio(stats[0].soloratio)">{{ stats[0].soloratio }}</td>
@@ -97,15 +96,15 @@
                 <caption>Enemies xvm</caption>
                 <thead>
                     <th scope="col" class="t_numW">Clan</th>
-                    <th scope="col" class="t_name">Player</th>
-                    <th scope="col" class="t_name">Ship</th>
+                    <th scope="col" class="t_name bold mildBlack">Player <i class="fas fa-user mildGray"></i></th>
+                    <th scope="col" class="t_name bold mildBlack">Ship <i class="fas fa-ship mildGray"></i></th>
                     <th scope="col" class="t_num1">Tier</th>
                     <th scope="col" class="t_numW"></th>
                     <th scope="col" class="t_num1"></th>
 
-                    <th scope="col" class="bold t_numW">Ship<br />WR</th>
-                    <th scope="col" class="t_num">Battles</th>
-                    <th scope="col" class="t_numW">Dmg</th>
+                    <th scope="col" class="t_numW partition">Ship<br />WR</th>
+                    <th scope="col" class="t_num textRight">Battles</th>
+                    <th scope="col" class="t_numW textRight">Dmg</th>
                     <th scope="col" class="t_num">Kill</th>
                     <th scope="col" class="t_num">生存</th>
                     <th scope="col" class="t_num">K/D</th>
@@ -113,11 +112,10 @@
                     <th scope="col" class="t_num">torp</th>
                     <th scope="col" class="t_num">撃墜</th>
                     
-                    <th scope="col" class="bold t_numW">WR</th>
-                    <th scope="col" class="t_numW">Battles</th>
-                    <th scope="col" class="t_numW">Dmg</th>
+                    <th scope="col" class="t_numW partition bold mildBlack">WR <i class="fas fa-trophy mildGray"></i></th>
+                    <th scope="col" class="t_numW textRight">Battles</th>
+                    <th scope="col" class="t_numW textRight">Dmg</th>
                     <th scope="col" class="t_num">Kill</th>
-                    <th scope="col" class="t_num">生存</th>
                     <th scope="col" class="t_num">K/D</th>
                     <th scope="col" class="t_numW">Solo<br />WR</th>
                     <th scope="col" class="t_num">Solo<br />Ratio</th>
@@ -126,29 +124,28 @@
                 <tbody class="radius">
 
                     <tr v-for="stats in enemies">
-                        
+                                                
                         <td>{{ stats[0].clantag }}</td>
                         <td>{{ stats[0].name }}</td>
-                        <td>{{ stats[1].name }}</td>
+                        <td class="bold mildBlack">{{ stats[1].name }}</td>
                         <td>{{ stats[1].tier }}</td>
                         <td>{{ stats[1].nation }}</td>
                         <td>{{ getClassKanji(stats[1].type) }}</td>
 
                         <td :class="getColorWR(stats[1].wr)" class="bold">{{ stats[1].wr }}</td>
-                        <td>{{ stats[1].battles }}</td>
-                        <td>{{ stats[1].avgdmg }}</td>
+                        <td class="textRight">{{ stats[1].battles }}</td>
+                        <td class="textRight">{{ stats[1].avgdmg }}</td>
                         <td>{{ stats[1].avgkill }}</td>
-                        <td>{{ stats[1].survive }}</td>
+                        <td :class="checkBot(stats[1].survive, stats[1].battles)">{{ stats[1].survive }}</td>
                         <td>{{ stats[1].killdeath }}</td>
-                        <td>{{ stats[1].gunaim }}</td>
+                        <td :class="checkShirogane(stats[1].gunaim, stats[1].type)">{{ stats[1].gunaim }}</td>
                         <td>{{ stats[1].torpaim }}</td>
                         <td>{{ stats[1].avgdown }}</td>
 
                         <td :class="getColorWR(stats[0].totalwr)" class="bold">{{ tellHidden(stats[0].totalwr, stats[0].hidden) }}</td>
-                        <td :class="compareRekisi(stats[0].battles)">{{ stats[0].battles }}</td>
-                        <td>{{ stats[0].avgdmg }}</td>
+                        <td :class="compareRekisi(stats[0].battles)"  class="textRight">{{ stats[0].battles }}</td>
+                        <td  class="textRight">{{ stats[0].avgdmg }}</td>
                         <td>{{ stats[0].avgkill }}</td>
-                        <td>{{ stats[0].survive }}</td>
                         <td>{{ stats[0].killdeath }}</td>
                         <td :class="getColorWR(stats[0].solowr)" class="bold">{{ stats[0].solowr }}</td>
                         <td :class="inSoloRatio(stats[0].soloratio)">{{ stats[0].soloratio }}</td>

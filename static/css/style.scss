@@ -29,11 +29,23 @@ body{
 }
 
 .bold{
-    font-weight: bold;
+    font-weight: bold !important;
 }
 
 .under{
-    text-decoration: underline;
+    text-decoration: underline !important;
+}
+
+.mildBlack{
+    color: #3d3d3d !important;
+}
+
+.mildGray{
+    color: #999999 !important;
+}
+
+.textRight{
+    text-align: right !important;
 }
 
 // Classes
@@ -63,13 +75,13 @@ div#test{
     padding: 16px 0 0 0;
 
     div.table_wrapper{
-        padding: 0 10px;
+        padding: 5px 10px 0px;
         box-shadow:
             5px 5px 5px $dark,
             -5px -5px 5px $light,
             inset 5px 5px 5px transparent,
             inset -5px -5px 5px transparent;
-        margin: 0 auto 20px;
+        margin: 0 auto 30px;
         width: 78%;
         min-width: 1345px;
 
@@ -82,6 +94,7 @@ div#test{
             // border-spacing: 10px 0;
             thead{
                 tr{
+                    border-bottom: 1px $dark solid;
                     th{
                         padding: 0 8px;
                         font-weight: normal;
@@ -92,26 +105,31 @@ div#test{
                 }
             }
             tbody{
-                box-shadow:
-                5px 5px 5px transparent,
-                -5px -5px 5px transparent,
-                inset 5px 5px 5px $dark,
-                inset -5px -5px 5px $light;
+                // box-shadow:
+                // 5px 5px 5px transparent,
+                // -5px -5px 5px transparent,
+                // inset 5px 5px 5px $dark,
+                // inset -5px -5px 5px $light;
                 padding: 8px;
                 margin: 10px;
                 tr{
                     border-top: 1px $dark dotted;
                     padding: 0 10px;
+                    background-color: $main;
                     &:first-child{
                         border: none;
                         td{
-                            padding-top: 10px !important;
+                            // padding-top: 10px !important;
+                            padding-top: 2px !important;
                         }
                     }
                     &:last-child{
                         td{
                             padding-bottom: 10px !important;
                         }
+                    }
+                    &:nth-child(2n-1){
+                        background-color: #fafafa;
                     }
                     td{
                         padding: 1px 8px;
@@ -130,6 +148,9 @@ div#test{
             }
             .t_numW{
                 width: 55px;
+            }
+            .partition{
+                border-left: 1px $dark dotted;
             }
         }
     }
