@@ -215,6 +215,13 @@ new Vue({
             }else{
                 return;
             }
+        },
+        showBattleStatus: function(){
+            if (this.inBattle){
+                return "In Battle!"
+            }else{
+                return "Not in Battle"
+            }
         }
     },
 });

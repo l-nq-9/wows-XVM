@@ -72,7 +72,7 @@ body{
 div#test{
     width: 100%;
     margin: 0 auto;
-    padding: 16px 0 0 0;
+    padding: 14px 0 0 0;
 
     div.table_wrapper{
         padding: 5px 10px 0px;
@@ -81,9 +81,12 @@ div#test{
             -5px -5px 5px $light,
             inset 5px 5px 5px transparent,
             inset -5px -5px 5px transparent;
-        margin: 0 auto 30px;
+        margin: 20px auto 0px;
         width: 78%;
         min-width: 1345px;
+        &:first-child{
+            margin: 0 auto 20px;
+        }
 
         table{
             line-height: 1.4rem;
@@ -153,5 +156,13 @@ div#test{
                 border-left: 1px $dark dotted;
             }
         }
+    }
+    .middleBar{
+        width: 100%;
+        height: 35px;
+        background-color: $dark;
+        color: $light;
+        line-height: 35px;
+        text-align: center;
     }
 }
