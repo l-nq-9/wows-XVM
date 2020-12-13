@@ -12,7 +12,21 @@ $wr6: #674196;
 body{
     background-color: $main;
     letter-spacing: 1px;
-    font-size: 0.78rem;
+    font-size: 0.7rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.cf{
+    &:after{
+        content: "";
+        clear: both;
+        display: block;
+    }
+}
+
+.animate{
+    transition: all 300ms 0s ease;
 }
 
 .inBattle{
@@ -26,6 +40,10 @@ body{
 
 .radius{
     border-radius: 10px;
+}
+
+.radiusCir{
+    border-radius: 50%;
 }
 
 .bold{
@@ -46,6 +64,18 @@ body{
 
 .textRight{
     text-align: right !important;
+}
+
+.no-spacing{
+    letter-spacing: 0px !important;
+}
+
+.shadowUp{
+    box-shadow: 3px 3px 5px $dark, -4px -4px 8px $light,
+}
+
+.shadowDown{
+    box-shadow: inset 3px 3px 4px $dark, inset -4px -4px 8px $light;
 }
 
 // Classes
@@ -71,19 +101,15 @@ body{
 // Components
 div#test{
     width: 100%;
+    height: 100%;
     margin: 0 auto;
     padding: 14px 0 0 0;
 
     div.table_wrapper{
+        // display: inline-block;
         padding: 5px 10px 0px;
-        box-shadow:
-            5px 5px 5px $dark,
-            -5px -5px 5px $light,
-            inset 5px 5px 5px transparent,
-            inset -5px -5px 5px transparent;
         margin: 20px auto 0px;
-        width: 78%;
-        min-width: 1345px;
+        // width: 1040px;
         &:first-child{
             margin: 0 auto 20px;
         }
@@ -94,6 +120,7 @@ div#test{
             margin: 0 auto;
             table-layout: fixed;
             width: 100%;
+            min-width: 50%;
             // border-spacing: 10px 0;
             thead{
                 tr{
@@ -128,29 +155,30 @@ div#test{
                     }
                     &:last-child{
                         td{
-                            padding-bottom: 10px !important;
+                            padding-bottom: 2px !important;
                         }
                     }
                     &:nth-child(2n-1){
                         background-color: #fafafa;
                     }
                     td{
-                        padding: 1px 8px;
+                        padding: 2px 8px;
                         overflow: hidden;
+                        white-space: nowrap;
                     }
                 }
             }
-            .t_name{
-                width: 130px;
+            .t_115{
+                width: 115px;
             }
-            .t_num1{
-                width: 25px;
+            .t_20{
+                width: 20px;
             }
-            .t_num{
-                width: 45px;
+            .t_60{
+                width: 60px;
             }
-            .t_numW{
-                width: 55px;
+            .t_nor{
+                width: 50px;
             }
             .partition{
                 border-left: 1px $dark dotted;
@@ -158,11 +186,107 @@ div#test{
         }
     }
     .middleBar{
-        width: 100%;
+        width: calc( 100% - 30px );
         height: 35px;
         background-color: $dark;
         color: $light;
         line-height: 35px;
         text-align: center;
+        margin: 0 auto;
+    }
+    div.settings{
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        line-height: 40px;
+        height: 40px;
+        padding-top: 3px;
+        text-align: center;
+        transition: all 300ms 0s ease;
+        background-color: $main;
+        cursor: pointer;
+        i.fa-cog{
+            font-size: 1.2rem;
+        }
+        &:hover{
+            box-shadow: none !important;
+        }
+    }
+
+    div#settingScreen{
+        background: $main;
+        width: 400px;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        z-index: 9999;
+        height: 100%;
+        div.settingBox{
+            width: 350px;
+            margin: 15px auto 0;
+            padding: 10px;
+            h1{
+                font-weight: normal;
+                font-size: 1.0rem;
+            }
+            h2{
+                font-weight: bold;
+                font-size: 0.7rem;
+            }
+            ul{
+                li{
+                    width: 84%;
+                    margin: 0 auto 14px;
+                    div.columnDetail{
+                        float: left;
+                        height: 26px;
+                        line-height: 26px;
+                        span{
+                            &:before{
+                                content: "　-";
+                            }
+                        }
+                    }
+                    div.buttonBase{
+                        float: right;
+                        cursor: pointer;
+                        width: 56px;
+                        height: 26px;
+                        border-radius: 15px;
+                        padding: 4px 5px;
+                        position: relative;
+                        background-color: $main;
+                        div.buttonToggle{
+                            height: 18px;
+                            width: 18px;
+                            position: absolute;
+                            z-index: 20;
+                            background-color: #f3f3f3;
+                            right: 33px;
+                            top: 4px;
+                        }
+                        .addedButton{
+                            right: 5px !important;
+                        }
+                    }
+                    .addedBase{
+                        background-color: #a0d8ef !important;
+                    }
+                }
+            }         
+        }
+    }
+    div#modalScreen{
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        background-color: #000;
+        opacity: 0.05;
     }
 }
+

@@ -4,10 +4,17 @@ var apiurl = process.env.APIURL;
 var wowspath = process.env.WOWSPATH;
 
 var express = require("express");
+var bodyParser = require('body-parser');
+
 var fs = require("fs");
 var request = require('request');
 
 var app = express();
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 // static endpoint
 app.use(express.static(__dirname + '/static'));
@@ -45,6 +52,9 @@ app.get("/api/player", function(req, res, next){
 
         var pid = null;
         
+        if (err != null){
+            return;
+        }
         if (body.status == 'error'){
             player.status = 'error';
             player.name = body.error.value;
@@ -78,6 +88,9 @@ app.get("/api/player", function(req, res, next){
 
             request(options_getstats, function(statserr, statsresponse, statsbody){
 
+                if (statserr != null){
+                    return;
+                }
                 // console.log(statsbody);
 
                 if (statsbody.status != "error"){
@@ -99,6 +112,10 @@ app.get("/api/player", function(req, res, next){
                     }
                      
                     request(options_getclan, function(clanerr, clanres, clanbody){
+
+                        if (clanerr != null){
+                            return;
+                        }
                         
                         player.clantag = null;
                         if (clanbody.data[pid] != null){
@@ -140,8 +157,8 @@ app.get("/api/ships", function(req, res, next){
     var playerid = req.query.playerid;
     var shipid = req.query.shipid;
 
-    console.log("playerId:" + playerid);
-    console.log("shipId:" + shipid);
+    console.log("playerId : " + playerid);
+    console.log("shipId : " + shipid);
     console.log();
 
     // var playerid = "2013880375"; //l_nq__9
@@ -158,6 +175,10 @@ app.get("/api/ships", function(req, res, next){
     request(options, function(err, response, body){
 
         // console.log(body);
+
+        if (err != null){
+            return;
+        }
 
         if (body.data[playerid] != null){
             var stats = body.data[playerid][0].pvp;
@@ -195,6 +216,10 @@ app.get("/api/ships", function(req, res, next){
 
         request(options_base, function(error, responsebase, base_body){
 
+            if (error != null){
+                return;
+            }
+
             ships.name = base_body.data[shipid].name;
             ships.tier = base_body.data[shipid].tier;
             ships.nation = base_body.data[shipid].nation;
@@ -208,6 +233,71 @@ app.get("/api/ships", function(req, res, next){
     });
 });
 
+app.get("/api/rekisi", function(req, res, next){
+    var options_getRekisi = {
+        url: apiurl + "/wows/account/info/?application_id=" + apikey + "&account_id=2004758555",
+        method: "get",
+        json: true,
+    }
+
+    var rekisi = {};
+
+    request(options_getRekisi, function(err, response, body){
+        if (err != null){
+            return;
+        }
+
+        rekisi.battles = body.data[2004758555].statistics.pvp.battles;
+        res.json(rekisi);
+    });
+
+});
+
+app.get("/api/settings", function(req, res, next){
+    var settingFile = "settings.json";
+
+    var settingJson = {};
+    try{
+        settingJson = JSON.parse(fs.readFileSync(settingFile, 'utf8'));
+    }catch{
+
+    }
+    res.json(settingJson);
+});
+
+app.put("/api/settings", function(req, res, next){
+    // console.log(req.body);
+
+    var settingFile = "settings.json";
+
+    var settingJson = JSON.parse(fs.readFileSync(settingFile, 'utf8'));
+
+    settingJson.shipWr = req.body.shipWr;
+    settingJson.shipBattles = req.body.shipBattles;
+    settingJson.shipDmg = req.body.shipDmg;
+    settingJson.shipKill = req.body.shipKill;
+    settingJson.shipSurvive = req.body.shipSurvive;
+    settingJson.shipKd = req.body.shipKd;
+    settingJson.shipGun = req.body.shipGun;
+    settingJson.shipTorp = req.body.shipTorp;
+    settingJson.shipAa = req.body.shipAa;
+    settingJson.ttlBattles = req.body.ttlBattles;
+    settingJson.ttlDmg = req.body.ttlDmg;
+    settingJson.ttlKill = req.body.ttlKill;
+    settingJson.ttlKd = req.body.ttlKd;
+    settingJson.soloWr = req.body.soloWr;
+    settingJson.soloRatio = req.body.soloRatio;
+    settingJson.divWr = req.body.divWr;
+    settingJson.rekisi = req.body.rekisi;
+    settingJson.darkTheme = req.body.darkTheme;
+
+    fs.writeFile(settingFile, JSON.stringify(settingJson, null, 2), function writeJSON(err) {
+        if (err) return console.log(err);
+    });
+
+    res.end();
+
+});
 // var apikey = "";
 // var apiurl = "https://api.worldofwarships.asia";
 // var wowspath = "C:/Games/World_of_Warships_Asia";

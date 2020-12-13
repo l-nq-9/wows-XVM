@@ -1,0 +1,18 @@
+{
+  "shipWr": true,
+  "shipBattles": true,
+  "shipDmg": true,
+  "shipKill": true,
+  "shipSurvive": false,
+  "shipKd": true,
+  "shipGun": false,
+  "shipTorp": false,
+  "shipAa": false,
+  "ttlBattles": true,
+  "ttlDmg": true,
+  "ttlKill": true,
+  "ttlKd": true,
+  "soloWr": true,
+  "soloRatio": true,
+  "divWr": true
+}

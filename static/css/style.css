@@ -1,7 +1,20 @@
+@charset "UTF-8";
 body {
   background-color: #f3f3f3;
   letter-spacing: 1px;
-  font-size: 0.78rem;
+  font-size: 0.7rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.cf:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.animate {
+  transition: all 300ms 0s ease;
 }
 
 .inBattle {
@@ -14,6 +27,10 @@ body {
 
 .radius {
   border-radius: 10px;
+}
+
+.radiusCir {
+  border-radius: 50%;
 }
 
 .bold {
@@ -34,6 +51,18 @@ body {
 
 .textRight {
   text-align: right !important;
+}
+
+.no-spacing {
+  letter-spacing: 0px !important;
+}
+
+.shadowUp {
+  box-shadow: 3px 3px 5px #a3b1c6, -4px -4px 8px #ffffff;
+}
+
+.shadowDown {
+  box-shadow: inset 3px 3px 4px #a3b1c6, inset -4px -4px 8px #ffffff;
 }
 
 .class1 {
@@ -62,15 +91,13 @@ body {
 
 div#test {
   width: 100%;
+  height: 100%;
   margin: 0 auto;
   padding: 14px 0 0 0;
 }
 div#test div.table_wrapper {
   padding: 5px 10px 0px;
-  box-shadow: 5px 5px 5px #a3b1c6, -5px -5px 5px #ffffff, inset 5px 5px 5px transparent, inset -5px -5px 5px transparent;
   margin: 20px auto 0px;
-  width: 78%;
-  min-width: 1345px;
 }
 div#test div.table_wrapper:first-child {
   margin: 0 auto 20px;
@@ -81,6 +108,7 @@ div#test div.table_wrapper table {
   margin: 0 auto;
   table-layout: fixed;
   width: 100%;
+  min-width: 50%;
 }
 div#test div.table_wrapper table thead tr {
   border-bottom: 1px #a3b1c6 solid;
@@ -108,37 +136,128 @@ div#test div.table_wrapper table tbody tr:first-child td {
   padding-top: 2px !important;
 }
 div#test div.table_wrapper table tbody tr:last-child td {
-  padding-bottom: 10px !important;
+  padding-bottom: 2px !important;
 }
 div#test div.table_wrapper table tbody tr:nth-child(2n-1) {
   background-color: #fafafa;
 }
 div#test div.table_wrapper table tbody tr td {
-  padding: 1px 8px;
+  padding: 2px 8px;
   overflow: hidden;
+  white-space: nowrap;
 }
-div#test div.table_wrapper table .t_name {
-  width: 130px;
+div#test div.table_wrapper table .t_115 {
+  width: 115px;
 }
-div#test div.table_wrapper table .t_num1 {
-  width: 25px;
+div#test div.table_wrapper table .t_20 {
+  width: 20px;
 }
-div#test div.table_wrapper table .t_num {
-  width: 45px;
+div#test div.table_wrapper table .t_60 {
+  width: 60px;
 }
-div#test div.table_wrapper table .t_numW {
-  width: 55px;
+div#test div.table_wrapper table .t_nor {
+  width: 50px;
 }
 div#test div.table_wrapper table .partition {
   border-left: 1px #a3b1c6 dotted;
 }
 div#test .middleBar {
-  width: 100%;
+  width: calc( 100% - 30px );
   height: 35px;
   background-color: #a3b1c6;
   color: #ffffff;
   line-height: 35px;
   text-align: center;
+  margin: 0 auto;
+}
+div#test div.settings {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 40px;
+  line-height: 40px;
+  height: 40px;
+  padding-top: 3px;
+  text-align: center;
+  transition: all 300ms 0s ease;
+  background-color: #f3f3f3;
+  cursor: pointer;
+}
+div#test div.settings i.fa-cog {
+  font-size: 1.2rem;
+}
+div#test div.settings:hover {
+  box-shadow: none !important;
+}
+div#test div#settingScreen {
+  background: #f3f3f3;
+  width: 400px;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  z-index: 9999;
+  height: 100%;
+}
+div#test div#settingScreen div.settingBox {
+  width: 350px;
+  margin: 15px auto 0;
+  padding: 10px;
+}
+div#test div#settingScreen div.settingBox h1 {
+  font-weight: normal;
+  font-size: 1.0rem;
+}
+div#test div#settingScreen div.settingBox h2 {
+  font-weight: bold;
+  font-size: 0.7rem;
+}
+div#test div#settingScreen div.settingBox ul li {
+  width: 84%;
+  margin: 0 auto 14px;
+}
+div#test div#settingScreen div.settingBox ul li div.columnDetail {
+  float: left;
+  height: 26px;
+  line-height: 26px;
+}
+div#test div#settingScreen div.settingBox ul li div.columnDetail span:before {
+  content: "　-";
+}
+div#test div#settingScreen div.settingBox ul li div.buttonBase {
+  float: right;
+  cursor: pointer;
+  width: 56px;
+  height: 26px;
+  border-radius: 15px;
+  padding: 4px 5px;
+  position: relative;
+  background-color: #f3f3f3;
+}
+div#test div#settingScreen div.settingBox ul li div.buttonBase div.buttonToggle {
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  z-index: 20;
+  background-color: #f3f3f3;
+  right: 33px;
+  top: 4px;
+}
+div#test div#settingScreen div.settingBox ul li div.buttonBase .addedButton {
+  right: 5px !important;
+}
+div#test div#settingScreen div.settingBox ul li .addedBase {
+  background-color: #a0d8ef !important;
+}
+div#test div#modalScreen {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: #000;
+  opacity: 0.05;
 }
 
 /*# sourceMappingURL=style.css.map */

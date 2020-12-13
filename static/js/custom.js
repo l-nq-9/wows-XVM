@@ -1,13 +1,62 @@
 new Vue({
     el: "#test",
     data: {
-        polling: 4000,　//ポーリング間隔（ﾐﾘ秒） CPUの負荷とか考えるならおのおの調整してくれや
+        polling: 2000,　//ポーリング間隔（ﾐﾘ秒） CPUの負荷とか考えるならおのおの調整してくれや
         inBattle: false,
         all: [],
         allies: [],
         enemies: [],
         jsonTime: "0000",
-        rekisi: 10000, //初期値は10000. このあと正確な値を取得
+        rekisi: 10000, //10000で仮置きしているだけ. このあと正確な値を取得
+        tableWidth: 1200,
+        darkTheme: false,
+
+        settings: [
+            true, //0 shipWr
+            true, //1 shipBattles
+            true, //2 shipDmg
+            true, //3 shipKill
+            true, //4 shipSurvive
+            true, //5 shipKd
+            true, //6 shipGun
+            true, //7 shipTorp
+            true, //8 shipAa
+            true, //9 ttlBattles
+            true, //10ttlDmg
+            true, //11ttlKill
+            true, //12ttlKd
+            true, //13soloWr
+            true, //14soloRatio
+            true, //15divWr
+        ]
+    },
+    mounted: function(){
+        var self = this;
+
+        axios
+            .get("http://localhost:10080/api/settings")
+            .then( function(res){
+
+                self.settings.splice(0, 1, res.data.shipWr);
+                self.settings.splice(1, 1, res.data.shipBattles);
+                self.settings.splice(2, 1, res.data.shipDmg);
+                self.settings.splice(3, 1, res.data.shipKill);
+                self.settings.splice(4, 1, res.data.shipSurvive);
+                self.settings.splice(5, 1, res.data.shipKd);
+                self.settings.splice(6, 1, res.data.shipGun);
+                self.settings.splice(7, 1, res.data.shipTorp);
+                self.settings.splice(8, 1, res.data.shipAa);
+                self.settings.splice(9, 1, res.data.ttlBattles);
+                self.settings.splice(10, 1, res.data.ttlDmg);
+                self.settings.splice(11, 1, res.data.ttlKill);
+                self.settings.splice(12, 1, res.data.ttlKd);
+                self.settings.splice(13, 1, res.data.soloWr);
+                self.settings.splice(14, 1, res.data.soloRatio);
+                self.settings.splice(15, 1, res.data.divWr);
+                self.rekisi = res.data.rekisi;
+                self.darkTheme = res.data.darkTheme;
+
+            });
     },
     computed:{
         controller(){
@@ -46,8 +95,10 @@ new Vue({
         
     },
     methods: {
-        getXVM(list){
+        getXVM(list){       
             var self = this;
+
+            self.get1rekisi();
 
             self.allies = [];
             self.enemies = [];
@@ -61,7 +112,6 @@ new Vue({
                     console.log(result);
                 });
 
-            self.get1rekisi();
         },
         getStats(arenaData){
             var self = this;
@@ -178,7 +228,7 @@ new Vue({
         inSoloRatio: function(value){
             if (value == 100){
                 return "bold";
-            }else if (value <= 33.33){
+            }else if (value <= 30){
                 return "bold under";
             }else{
                 return;
@@ -186,10 +236,13 @@ new Vue({
         },
         get1rekisi(){
             var self = this;
-            var rekisiData = self.getPlayer("rekisi");
-            rekisiData.then( function(rekisiResult){
-                self.rekisi = rekisiResult.battles;
-            });
+
+            axios
+                .get("http://localhost:10080/api/rekisi")
+                .then( function(res){
+                    self.rekisi = res.data.battles;
+                })
+
         },
         compareRekisi: function(battles){
             if (battles >= this.rekisi){
@@ -199,18 +252,18 @@ new Vue({
             }
         },
         checkShirogane: function(aim, shipClass){
-            if (shipClass == "Battleship" && aim >= 32){
+            if (shipClass == "Battleship" && aim >= 32.5){
                 return "bold under";
             }else if (shipClass == "Cruiser" && aim >= 40){
                 return "bold under";
-            }else if (shipClass == "Destroyer" && aim >= 50){
+            }else if (shipClass == "Destroyer" && aim >= 51){
                 return "bold under";
             }else{
                 return;
             }
         },
         checkBot: function(ratio, battles){
-            if (battles >= 10 && ratio <= 16.66){
+            if (battles >= 16 && ratio <= 12.5){
                 return "bold under";
             }else{
                 return;
@@ -218,10 +271,62 @@ new Vue({
         },
         showBattleStatus: function(){
             if (this.inBattle){
-                return "In Battle!"
+                return "In Battle!";
             }else{
-                return "Not in Battle"
+                return "Not in Battle";
             }
+        },
+        settingButton(index){
+            this.settings.splice(index, 1, !this.settings[index]);
+        },
+        decideTableWidth(){
+            var counter = 0;
+
+            for (var i = 0; i<=15; i++){
+                if (this.settings[i]){
+                    counter++;
+                }
+            }
+
+            this.tableWidth = 480 + 50*counter;
+        },
+        saveSettings(){
+            var self = this;
+            
+            axios
+                .put("http://localhost:10080/api/settings", {
+                    shipWr: self.settings[0],
+                    shipBattles: self.settings[1],
+                    shipDmg: self.settings[2],
+                    shipKill: self.settings[3],
+                    shipSurvive: self.settings[4],
+                    shipKd: self.settings[5],
+                    shipGun: self.settings[6],
+                    shipTorp: self.settings[7],
+                    shipAa: self.settings[8],
+                    ttlBattles: self.settings[9],
+                    ttlDmg: self.settings[10],
+                    ttlKill: self.settings[11],
+                    ttlKd: self.settings[12],
+                    soloWr: self.settings[13],
+                    soloRatio: self.settings[14],
+                    divWr: self.settings[15]
+                })
+                .then( function(){
+                    console.log("Saved")
+                })
         }
     },
+});
+
+
+//時代の敗北者jQuery
+$(".settings").click(function(){
+    $("body").animate({left : "-400px"});
+    $("#modalScreen").fadeIn(500);
+});
+
+$("#modalScreen").click(function(){
+    $("body").animate({left: "0px"});
+    $("#modalScreen").fadeOut(500);
 });

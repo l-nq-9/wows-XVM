@@ -16,43 +16,46 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script src="https://kit.fontawesome.com/a36d4011d5.js" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 
 <body>
 
     <div id="test" v-bind:class="{ inBattle: inBattle }">
         {{ controller }}
+        {{ decideTableWidth() }}
 
-        <div class="table_wrapper radius">
+        <div class="table_wrapper radius shadowUp" :style="{width: tableWidth + 'px'}">
             <table id="allies" class="radius">
                 <caption>Allies xvm</caption>
                 <thead>
                     <tr>
-                        <th scope="col" class="t_numW">Clan</th>
-                        <th scope="col" class="t_name bold mildBlack">Player <i class="fas fa-user mildGray"></i></th>
-                        <th scope="col" class="t_name bold mildBlack">Ship <i class="fas fa-ship mildGray"></i></th>
-                        <th scope="col" class="t_num1">Tier</th>
-                        <th scope="col" class="t_numW"></th>
-                        <th scope="col" class="t_num1"></th>
+                        <th scope="col" class="t_60">Clan</th>
+                        <th scope="col" class="t_115 bold mildBlack">Player <i class="fas fa-user mildGray"></i></th>
+                        <th scope="col" class="t_20">T</th>
+                        <th scope="col" class="t_nor"></th>
+                        <th scope="col" class="t_20"></th>
+                        <th scope="col" class="t_115 bold mildBlack">Ship <i class="fas fa-ship mildGray"></i></th>
 
-                        <th scope="col" class="t_numW partition">Ship<br />WR</th>
-                        <th scope="col" class="t_num textRight">Battles</th>
-                        <th scope="col" class="t_numW textRight">Dmg</th>
-                        <th scope="col" class="t_num">Kill</th>
-                        <th scope="col" class="t_num">生存</th>
-                        <th scope="col" class="t_num">K/D</th>
-                        <th scope="col" class="t_num">gun</th>
-                        <th scope="col" class="t_num">torp</th>
-                        <th scope="col" class="t_num">撃墜</th>
+                        <th v-if="settings[0]" scope="col" class="t_nor partition">Ship<br />WR</th>
+                        <th v-if="settings[1]" scope="col" class="t_nor textRight">Battles</th>
+                        <th v-if="settings[2]" scope="col" class="t_nor textRight">Dmg</th>
+                        <th v-if="settings[3]" scope="col" class="t_nor">Kill</th>
+                        <th v-if="settings[4]" scope="col" class="t_nor">生存</th>
+                        <th v-if="settings[5]" scope="col" class="t_nor">K/D</th>
+                        <th v-if="settings[6]" scope="col" class="t_nor">gun</th>
+                        <th v-if="settings[7]" scope="col" class="t_nor">torp</th>
+                        <th v-if="settings[8]" scope="col" class="t_nor">撃墜</th>
                         
-                        <th scope="col" class="t_numW partition bold mildBlack">WR <i class="fas fa-trophy mildGray"></i></th>
-                        <th scope="col" class="t_numW textRight">Battles</th>
-                        <th scope="col" class="t_numW textRight">Dmg</th>
-                        <th scope="col" class="t_num">Kill</th>
-                        <th scope="col" class="t_num">K/D</th>
-                        <th scope="col" class="t_numW">Solo<br />WR</th>
-                        <th scope="col" class="t_num">Solo<br />Ratio</th>
-                        <th scope="col" class="t_numW">3div<br />WR</th>
+                        <th scope="col" class="t_nor partition bold mildBlack">WR <i class="fas fa-trophy mildGray"></i></th>
+                        <th v-if="settings[9]" scope="col" class="t_nor textRight">Battles</th>
+                        <th v-if="settings[10]" scope="col" class="t_nor textRight">Dmg</th>
+                        <th v-if="settings[11]" scope="col" class="t_nor">Kill</th>
+                        <th v-if="settings[12]" scope="col" class="t_nor">K/D</th>
+                        <th v-if="settings[13]" scope="col" class="t_nor partition bold">Solo<br />WR</i></th>
+                        <th v-if="settings[14]" scope="col" class="t_nor">Solo<br />Ratio</th>
+                        <th v-if="settings[15]" scope="col" class="t_nor">3div<br />WR</th>
                     </tr>
                 </thead>
                 <tbody class="radius">
@@ -61,29 +64,29 @@
                         
                         <td>{{ stats[0].clantag }}</td>
                         <td>{{ stats[0].name }}</td>
-                        <td class="bold mildBlack">{{ stats[1].name }}</td>
                         <td>{{ stats[1].tier }}</td>
-                        <td>{{ stats[1].nation }}</td>
+                        <td class="no-spacing">{{ stats[1].nation }}</td>
                         <td>{{ getClassKanji(stats[1].type) }}</td>
+                        <td class="bold mildBlack t_name">{{ stats[1].name }}</td>
 
-                        <td :class="getColorWR(stats[1].wr)" class="bold">{{ stats[1].wr }}</td>
-                        <td class="textRight">{{ stats[1].battles }}</td>
-                        <td class="textRight">{{ stats[1].avgdmg }}</td>
-                        <td>{{ stats[1].avgkill }}</td>
-                        <td :class="checkBot(stats[1].survive, stats[1].battles)">{{ stats[1].survive }}</td>
-                        <td>{{ stats[1].killdeath }}</td>
-                        <td :class="checkShirogane(stats[1].gunaim, stats[1].type)">{{ stats[1].gunaim }}</td>
-                        <td>{{ stats[1].torpaim }}</td>
-                        <td>{{ stats[1].avgdown }}</td>
+                        <td v-if="settings[0]" :class="getColorWR(stats[1].wr)" class="bold">{{ stats[1].wr }}</td>
+                        <td v-if="settings[1]" class="textRight">{{ stats[1].battles }}</td>
+                        <td v-if="settings[2]" class="textRight">{{ stats[1].avgdmg }}</td>
+                        <td v-if="settings[3]" >{{ stats[1].avgkill }}</td>
+                        <td v-if="settings[4]" :class="checkBot(stats[1].survive, stats[1].battles)">{{ stats[1].survive }}</td>
+                        <td v-if="settings[5]" >{{ stats[1].killdeath }}</td>
+                        <td v-if="settings[6]" :class="checkShirogane(stats[1].gunaim, stats[1].type)">{{ stats[1].gunaim }}</td>
+                        <td v-if="settings[7]" >{{ stats[1].torpaim }}</td>
+                        <td v-if="settings[8]" >{{ stats[1].avgdown }}</td>
 
                         <td :class="getColorWR(stats[0].totalwr)" class="bold">{{ tellHidden(stats[0].totalwr, stats[0].hidden) }}</td>
-                        <td :class="compareRekisi(stats[0].battles)"  class="textRight">{{ stats[0].battles }}</td>
-                        <td  class="textRight">{{ stats[0].avgdmg }}</td>
-                        <td>{{ stats[0].avgkill }}</td>
-                        <td>{{ stats[0].killdeath }}</td>
-                        <td :class="getColorWR(stats[0].solowr)" class="bold">{{ stats[0].solowr }}</td>
-                        <td :class="inSoloRatio(stats[0].soloratio)">{{ stats[0].soloratio }}</td>
-                        <td :class="getColorWR(stats[0].div3wr)" class="bold">{{ stats[0].div3wr }}</td>
+                        <td v-if="settings[9]" :class="compareRekisi(stats[0].battles)"  class="textRight">{{ stats[0].battles }}</td>
+                        <td v-if="settings[10]"  class="textRight">{{ stats[0].avgdmg }}</td>
+                        <td v-if="settings[11]" >{{ stats[0].avgkill }}</td>
+                        <td v-if="settings[12]" >{{ stats[0].killdeath }}</td>
+                        <td v-if="settings[13]" :class="getColorWR(stats[0].solowr)" class="bold">{{ stats[0].solowr }}</td>
+                        <td v-if="settings[14]" :class="inSoloRatio(stats[0].soloratio)">{{ stats[0].soloratio }}</td>
+                        <td v-if="settings[15]" :class="getColorWR(stats[0].div3wr)" class="bold">{{ stats[0].div3wr }}</td>
 
                     </tr>
 
@@ -91,39 +94,39 @@
             </table> 
         </div>
 
-        <div class="middleBar">
+        <div class="middleBar radius">
             {{ showBattleStatus() }}
         </div>
 
-        <div class="table_wrapper radius">
+        <!-- <div class="table_wrapper radius shadowUp" :style="{width: tableWidth + 'px'}">
             <table id="enemies" class="radius">
                 <caption>Enemies xvm</caption>
                 <thead>
-                    <th scope="col" class="t_numW">Clan</th>
-                    <th scope="col" class="t_name bold mildBlack">Player <i class="fas fa-user mildGray"></i></th>
-                    <th scope="col" class="t_name bold mildBlack">Ship <i class="fas fa-ship mildGray"></i></th>
-                    <th scope="col" class="t_num1">Tier</th>
-                    <th scope="col" class="t_numW"></th>
-                    <th scope="col" class="t_num1"></th>
+                    <th scope="col" class="t_60">Clan</th>
+                    <th scope="col" class="t_115 bold mildBlack">Player <i class="fas fa-user mildGray"></i></th>
+                    <th scope="col" class="t_20">T</th>
+                    <th scope="col" class="t_nor"></th>
+                    <th scope="col" class="t_20"></th>
+                    <th scope="col" class="t_115 bold mildBlack">Ship <i class="fas fa-ship mildGray"></i></th>
 
-                    <th scope="col" class="t_numW partition">Ship<br />WR</th>
-                    <th scope="col" class="t_num textRight">Battles</th>
-                    <th scope="col" class="t_numW textRight">Dmg</th>
-                    <th scope="col" class="t_num">Kill</th>
-                    <th scope="col" class="t_num">生存</th>
-                    <th scope="col" class="t_num">K/D</th>
-                    <th scope="col" class="t_num">gun</th>
-                    <th scope="col" class="t_num">torp</th>
-                    <th scope="col" class="t_num">撃墜</th>
+                    <th v-if="shipWr" scope="col" class="t_nor partition">Ship<br />WR</th>
+                    <th v-if="shipBattles" scope="col" class="t_nor textRight">Battles</th>
+                    <th v-if="shipDmg" scope="col" class="t_nor textRight">Dmg</th>
+                    <th v-if="shipKill" scope="col" class="t_nor">Kill</th>
+                    <th v-if="shipSurvive" scope="col" class="t_nor">生存</th>
+                    <th v-if="shipKd" scope="col" class="t_nor">K/D</th>
+                    <th v-if="shipGun" scope="col" class="t_nor">gun</th>
+                    <th v-if="shipTorp" scope="col" class="t_nor">torp</th>
+                    <th v-if="shipAa" scope="col" class="t_nor">撃墜</th>
                     
-                    <th scope="col" class="t_numW partition bold mildBlack">WR <i class="fas fa-trophy mildGray"></i></th>
-                    <th scope="col" class="t_numW textRight">Battles</th>
-                    <th scope="col" class="t_numW textRight">Dmg</th>
-                    <th scope="col" class="t_num">Kill</th>
-                    <th scope="col" class="t_num">K/D</th>
-                    <th scope="col" class="t_numW">Solo<br />WR</th>
-                    <th scope="col" class="t_num">Solo<br />Ratio</th>
-                    <th scope="col" class="t_numW">3div<br />WR</th>
+                    <th scope="col" class="t_nor partition bold mildBlack">WR <i class="fas fa-trophy mildGray"></i></th>
+                    <th v-if="ttlBattles" scope="col" class="t_nor textRight">Battles</th>
+                    <th v-if="ttlDmg" scope="col" class="t_nor textRight">Dmg</th>
+                    <th v-if="ttlKill" scope="col" class="t_nor">Kill</th>
+                    <th v-if="ttlKd" scope="col" class="t_nor">K/D</th>
+                    <th v-if="soloWr" scope="col" class="t_nor partition bold">Solo<br />WR</i></th>
+                    <th v-if="soloRatio" scope="col" class="t_nor">Solo<br />Ratio</th>
+                    <th v-if="divWr" scope="col" class="t_nor">3div<br />WR</th>
                 </thead>
                 <tbody class="radius">
 
@@ -131,35 +134,263 @@
                                                 
                         <td>{{ stats[0].clantag }}</td>
                         <td>{{ stats[0].name }}</td>
-                        <td class="bold mildBlack">{{ stats[1].name }}</td>
                         <td>{{ stats[1].tier }}</td>
-                        <td>{{ stats[1].nation }}</td>
+                        <td class="no-spacing">{{ stats[1].nation }}</td>
                         <td>{{ getClassKanji(stats[1].type) }}</td>
+                        <td class="bold mildBlack t_name">{{ stats[1].name }}</td>
 
-                        <td :class="getColorWR(stats[1].wr)" class="bold">{{ stats[1].wr }}</td>
-                        <td class="textRight">{{ stats[1].battles }}</td>
-                        <td class="textRight">{{ stats[1].avgdmg }}</td>
-                        <td>{{ stats[1].avgkill }}</td>
-                        <td :class="checkBot(stats[1].survive, stats[1].battles)">{{ stats[1].survive }}</td>
-                        <td>{{ stats[1].killdeath }}</td>
-                        <td :class="checkShirogane(stats[1].gunaim, stats[1].type)">{{ stats[1].gunaim }}</td>
-                        <td>{{ stats[1].torpaim }}</td>
-                        <td>{{ stats[1].avgdown }}</td>
+                        <td v-if="shipWr" :class="getColorWR(stats[1].wr)" class="bold">{{ stats[1].wr }}</td>
+                        <td v-if="shipBattles" class="textRight">{{ stats[1].battles }}</td>
+                        <td v-if="shipDmg" class="textRight">{{ stats[1].avgdmg }}</td>
+                        <td v-if="shipKill" >{{ stats[1].avgkill }}</td>
+                        <td v-if="shipSurvive" :class="checkBot(stats[1].survive, stats[1].battles)">{{ stats[1].survive }}</td>
+                        <td v-if="shipKd" >{{ stats[1].killdeath }}</td>
+                        <td v-if="shipGun" :class="checkShirogane(stats[1].gunaim, stats[1].type)">{{ stats[1].gunaim }}</td>
+                        <td v-if="shipTorp" >{{ stats[1].torpaim }}</td>
+                        <td v-if="shipAa" >{{ stats[1].avgdown }}</td>
 
                         <td :class="getColorWR(stats[0].totalwr)" class="bold">{{ tellHidden(stats[0].totalwr, stats[0].hidden) }}</td>
-                        <td :class="compareRekisi(stats[0].battles)"  class="textRight">{{ stats[0].battles }}</td>
-                        <td  class="textRight">{{ stats[0].avgdmg }}</td>
-                        <td>{{ stats[0].avgkill }}</td>
-                        <td>{{ stats[0].killdeath }}</td>
-                        <td :class="getColorWR(stats[0].solowr)" class="bold">{{ stats[0].solowr }}</td>
-                        <td :class="inSoloRatio(stats[0].soloratio)">{{ stats[0].soloratio }}</td>
-                        <td :class="getColorWR(stats[0].div3wr)" class="bold">{{ stats[0].div3wr }}</td>
+                        <td v-if="ttlBattles" :class="compareRekisi(stats[0].battles)"  class="textRight">{{ stats[0].battles }}</td>
+                        <td v-if="ttlDmg"  class="textRight">{{ stats[0].avgdmg }}</td>
+                        <td v-if="ttlKill" >{{ stats[0].avgkill }}</td>
+                        <td v-if="ttlKd" >{{ stats[0].killdeath }}</td>
+                        <td v-if="soloWr" :class="getColorWR(stats[0].solowr)" class="bold">{{ stats[0].solowr }}</td>
+                        <td v-if="soloRatio" :class="inSoloRatio(stats[0].soloratio)">{{ stats[0].soloratio }}</td>
+                        <td v-if="divWr" :class="getColorWR(stats[0].div3wr)" class="bold">{{ stats[0].div3wr }}</td>
                         
                     </tr>
                 </tbody>
             </table>
-        </div>    
-    </div>
+        </div> -->
+
+        <div class="settings shadowUp radius">
+            <i class="fas fa-cog mildGray"></i>
+        </div>
+
+        <div id="settingScreen">
+            <div class="settingBox shadowUp radius">
+                <h1>Settings</h1>
+                    <h2>項目</h2>
+
+                        <ul>
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    shipWR
+                                    <span>
+                                        単艦勝率(%)
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(0)" :class="{'addedBase' : settings[0]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[0]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    shipBattles
+                                    <span>
+                                        単艦の戦闘数
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(1)" :class="{'addedBase' : settings[1]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[1]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    shipDmg
+                                    <span>
+                                        艦の平均与ダメージ
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(2)" :class="{'addedBase' : settings[2]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[2]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    shipKill
+                                    <span>
+                                        艦の平均キル
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(3)" :class="{'addedBase' : settings[3]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[3]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    ship生存
+                                    <span>
+                                        艦の生存率(%)
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(4)" :class="{'addedBase' : settings[4]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[4]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    shipK/D
+                                    <span>
+                                        艦のK/D比
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(5)" :class="{'addedBase' : settings[5]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[5]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    shipGun
+                                    <span>
+                                        艦の主砲命中率(%)
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(6)" :class="{'addedBase' : settings[6]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[6]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    shipTorp
+                                    <span>
+                                        艦の魚雷命中率(%)
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(7)" :class="{'addedBase' : settings[7]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[7]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    ship撃墜
+                                    <span>
+                                        艦の平均撃墜数
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(8)" :class="{'addedBase' : settings[8]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[8]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    Battles
+                                    <span>
+                                        総合戦闘数
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(9)" :class="{'addedBase' : settings[9]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[9]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    Dmg
+                                    <span>
+                                        アカウント平均与ダメージ
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(10)" :class="{'addedBase' : settings[10]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[10]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    Kill
+                                    <span>
+                                        アカウント平均キル
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(11)" :class="{'addedBase' : settings[11]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[11]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    K/D
+                                    <span>
+                                        アカウントK/D比
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(12)" :class="{'addedBase' : settings[12]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[12]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    soloWR
+                                    <span>
+                                        ソロ戦闘の勝率(%)
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(13)" :class="{'addedBase' : settings[13]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[13]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    soloRatio
+                                    <span>
+                                        ソロ戦闘の割合(%)
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(14)" :class="{'addedBase' : settings[14]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[14]}'></div>
+                                </div>
+                            </li>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    3divWR
+                                    <span>
+                                        3人分隊での勝率(%)
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDown animate" v-on:click="settingButton(15)" :class="{'addedBase' : settings[15]}">
+                                    <div class="buttonToggle radiusCir shadowUp animate" :class='{"addedButton" : settings[15]}'></div>
+                                </div>
+                            </li>
+                        </ul>
+            </div>
+        </div>
+
+        <div id="modalScreen" v-on:click="saveSettings">
+
+        </div>
+
+    </div><!--test-->
+
+
 
     <script type="text/javascript" src="js/custom.js"></script>
 </body>
