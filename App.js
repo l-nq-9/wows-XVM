@@ -244,7 +244,9 @@ app.get("/api/rekisi", function(req, res, next){
 
     request(options_getRekisi, function(err, response, body){
         if (err != null){
-            return;
+            var rekisiFile = "data/rekisi.json";
+            var rekisiJson = JSON.parse(fs.readFileSync(rekisiFile, 'utf8'));
+            res.json(rekisiJson);
         }
 
         rekisi.battles = body.data[2004758555].statistics.pvp.battles;
@@ -253,8 +255,21 @@ app.get("/api/rekisi", function(req, res, next){
 
 });
 
+app.put("/api/rekisi", function(req, res, next){
+    var settingFile = "data/rekisi.json";
+    var settingJson = JSON.parse(fs.readFileSync(settingFile, 'utf8'));
+
+    settingJson.rekisi = req.body.rekisi;
+
+    fs.writeFile(settingFile, JSON.stringify(settingJson, null, 2), function writeJSON(err) {
+        if (err) return console.log(err);
+    });
+
+    res.end();
+});
+
 app.get("/api/settings", function(req, res, next){
-    var settingFile = "settings.json";
+    var settingFile = "data/settings.json";
 
     var settingJson = {};
     try{
@@ -268,7 +283,7 @@ app.get("/api/settings", function(req, res, next){
 app.put("/api/settings", function(req, res, next){
     // console.log(req.body);
 
-    var settingFile = "settings.json";
+    var settingFile = "data/settings.json";
 
     var settingJson = JSON.parse(fs.readFileSync(settingFile, 'utf8'));
 
@@ -288,7 +303,6 @@ app.put("/api/settings", function(req, res, next){
     settingJson.soloWr = req.body.soloWr;
     settingJson.soloRatio = req.body.soloRatio;
     settingJson.divWr = req.body.divWr;
-    settingJson.rekisi = req.body.rekisi;
     settingJson.darkTheme = req.body.darkTheme;
 
     fs.writeFile(settingFile, JSON.stringify(settingJson, null, 2), function writeJSON(err) {
@@ -296,7 +310,6 @@ app.put("/api/settings", function(req, res, next){
     });
 
     res.end();
-
 });
 // var apikey = "";
 // var apiurl = "https://api.worldofwarships.asia";

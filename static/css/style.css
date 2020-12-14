@@ -1,6 +1,5 @@
 @charset "UTF-8";
 body {
-  background-color: #f3f3f3;
   letter-spacing: 1px;
   font-size: 0.7rem;
   overflow: hidden;
@@ -17,12 +16,24 @@ body {
   transition: all 300ms 0s ease;
 }
 
+.animateSlow {
+  transition: all 1200ms 0s ease;
+}
+
 .inBattle {
   display: block !important;
 }
 
 .none {
   display: none;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
 }
 
 .radius {
@@ -65,6 +76,18 @@ body {
   box-shadow: inset 3px 3px 4px #a3b1c6, inset -4px -4px 8px #ffffff;
 }
 
+.shadowUpMild {
+  box-shadow: 2px 2px 3px #a3b1c6, -1px -1px 5px #ffffff;
+}
+
+.shadowDownMild {
+  box-shadow: inset 2px 2px 4px #a3b1c6, inset -1px -1px 5px #ffffff;
+}
+
+.shadowClear {
+  box-shadow: none !important;
+}
+
 .class1 {
   color: #e2041b;
 }
@@ -90,6 +113,7 @@ body {
 }
 
 div#test {
+  background-color: #f3f3f3;
   width: 100%;
   height: 100%;
   margin: 0 auto;
@@ -146,17 +170,17 @@ div#test div.table_wrapper table tbody tr td {
   overflow: hidden;
   white-space: nowrap;
 }
-div#test div.table_wrapper table .t_115 {
-  width: 115px;
+div#test div.table_wrapper table .t_110 {
+  width: 110px;
 }
 div#test div.table_wrapper table .t_20 {
   width: 20px;
 }
-div#test div.table_wrapper table .t_60 {
-  width: 60px;
+div#test div.table_wrapper table .t_50 {
+  width: 50px;
 }
 div#test div.table_wrapper table .t_nor {
-  width: 50px;
+  width: 52px;
 }
 div#test div.table_wrapper table .partition {
   border-left: 1px #a3b1c6 dotted;
@@ -191,25 +215,25 @@ div#test div.settings:hover {
 }
 div#test div#settingScreen {
   background: #f3f3f3;
-  width: 400px;
+  width: 700px;
   position: absolute;
   top: 0;
   left: 100%;
   z-index: 9999;
   height: 100%;
 }
-div#test div#settingScreen div.settingBox {
-  width: 350px;
-  margin: 15px auto 0;
-  padding: 10px;
-}
-div#test div#settingScreen div.settingBox h1 {
+div#test div#settingScreen h1 {
   font-weight: normal;
   font-size: 1.0rem;
 }
-div#test div#settingScreen div.settingBox h2 {
+div#test div#settingScreen h2 {
   font-weight: bold;
   font-size: 0.7rem;
+}
+div#test div#settingScreen div.settingBox {
+  width: 350px;
+  margin: 15px 0 0 25px;
+  padding: 16px 10px 10px 16px;
 }
 div#test div#settingScreen div.settingBox ul li {
   width: 84%;
@@ -246,7 +270,27 @@ div#test div#settingScreen div.settingBox ul li div.buttonBase .addedButton {
   right: 5px !important;
 }
 div#test div#settingScreen div.settingBox ul li .addedBase {
-  background-color: #a0d8ef !important;
+  background-color: #11AACC !important;
+}
+div#test div#settingScreen div.changeTheme {
+  margin: 15px 0 0 25px;
+  padding: 16px 0px 16px 16px;
+  width: 274px;
+}
+div#test div#settingScreen div.changeTheme div.themeBox {
+  width: 113px;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  margin-right: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+div#test div#settingScreen div.changeTheme:first-child {
+  margin-left: 0px;
+}
+div#test div#settingScreen div.changeTheme .selectedTheme {
+  box-shadow: inset 3px 3px 4px #a3b1c6, inset -4px -4px 8px #ffffff;
 }
 div#test div#modalScreen {
   display: none;
@@ -258,6 +302,71 @@ div#test div#modalScreen {
   z-index: 10;
   background-color: #000;
   opacity: 0.05;
+}
+div#test.dark {
+  color: #ddd;
+  background-color: #44464E;
+}
+div#test.dark .class1 {
+  color: #ce5242;
+}
+div#test.dark .class2 {
+  color: #f39800;
+}
+div#test.dark .class3 {
+  color: #fef263;
+}
+div#test.dark .class4 {
+  color: #69b076;
+}
+div#test.dark .class5 {
+  color: #2ca9e1;
+}
+div#test.dark .class6 {
+  color: #a59aca;
+}
+div#test.dark .mildBlack {
+  color: #ddd !important;
+}
+div#test.dark div.table_wrapper {
+  background-color: #18191C;
+}
+div#test.dark div.table_wrapper table tbody tr {
+  background-color: #18191C;
+  border-top: 1px #393939 dotted;
+}
+div#test.dark div.table_wrapper table tbody tr:nth-child(2n-1) {
+  background-color: #26272B;
+}
+div#test.dark .middleBar {
+  background-color: #182B3C;
+}
+div#test.dark div.settings {
+  background-color: #18191C;
+}
+div#test.dark div.settings:hover {
+  background-color: #44464E;
+}
+div#test.dark div#settingScreen {
+  background-color: #44464E;
+}
+div#test.dark div#settingScreen .settingBox {
+  background-color: #18191C;
+}
+div#test.dark div#settingScreen .settingBox .buttonBase {
+  background-color: #44464E;
+}
+div#test.dark div#settingScreen .settingBox .buttonBase .buttonToggle {
+  background-color: #fff;
+}
+div#test.dark div#settingScreen .settingBox .addedBase {
+  background-color: #32AA6D !important;
+}
+div#test.dark div#settingScreen .changeTheme {
+  background-color: #18191C;
+}
+div#test.dark div#settingScreen .changeTheme .selectedTheme {
+  background-color: #44464E;
 }
 
 /*# sourceMappingURL=style.css.map */

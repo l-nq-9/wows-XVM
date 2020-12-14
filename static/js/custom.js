@@ -53,10 +53,11 @@ new Vue({
                 self.settings.splice(13, 1, res.data.soloWr);
                 self.settings.splice(14, 1, res.data.soloRatio);
                 self.settings.splice(15, 1, res.data.divWr);
-                self.rekisi = res.data.rekisi;
+                self.settings.splice(16, 1, res.data.darkTheme);
                 self.darkTheme = res.data.darkTheme;
-
             });
+
+        self.get1rekisi();
     },
     computed:{
         controller(){
@@ -79,9 +80,12 @@ new Vue({
                                             allLineup.push(res.data.vehicles[i]);
                                         }                         
                                     }
+
+                                    // console.log(allLineup);
+
                                     self.sortLineup(allLineup);
 
-                                    console.log(allLineup);
+                                    // console.log(allLineup);
                                     self.getXVM(allLineup);
                                 }
 
@@ -108,8 +112,8 @@ new Vue({
             }
 
             Promise.all(list)
-                .then( function(result){
-                    console.log(result);
+                .then( function(){
+
                 });
 
         },
@@ -134,7 +138,7 @@ new Vue({
                         }else{
                             self.enemies.push(temp);
                         }
-                        console.log(temp);
+                        // console.log(temp);
                         resolve("done");
                     })
                 })                
@@ -218,6 +222,19 @@ new Vue({
                 return "潜";
             }
         },
+        getClassNumber(value){
+            if (value == "Battleship"){
+                return 8;
+            }else if (value == "Cruiser"){
+                return 6;
+            }else if (value == "Destroyer"){
+                return 4;
+            }else if (value == "AirCarrier"){
+                return 10;
+            }else if (value == "Submarine"){
+                return 2;
+            }
+        },
         tellHidden: function(wr, flag){
             if (flag != "yes"){
                 return wr;
@@ -241,6 +258,7 @@ new Vue({
                 .get("http://localhost:10080/api/rekisi")
                 .then( function(res){
                     self.rekisi = res.data.battles;
+                    self.save1rekisi();
                 })
 
         },
@@ -288,7 +306,7 @@ new Vue({
                 }
             }
 
-            this.tableWidth = 480 + 50*counter;
+            this.tableWidth = 460 + 52*counter;
         },
         saveSettings(){
             var self = this;
@@ -310,11 +328,28 @@ new Vue({
                     ttlKd: self.settings[12],
                     soloWr: self.settings[13],
                     soloRatio: self.settings[14],
-                    divWr: self.settings[15]
+                    divWr: self.settings[15],
+                    darkTheme: self.darkTheme
                 })
                 .then( function(){
                     console.log("Saved")
                 })
+        },
+        save1rekisi(){
+            var self = this;
+            axios
+                .put("http://localhost:10080/api/rekisi", {
+                    rekisi: self.rekisi
+                })
+                .then( function(){
+                    console.log("Saved 1rekisi");
+                })
+        },
+        changeThemeToLight(){
+            this.darkTheme = false;
+        },
+        changeThemeToDark(){
+            this.darkTheme = true;
         }
     },
 });
@@ -322,7 +357,7 @@ new Vue({
 
 //時代の敗北者jQuery
 $(".settings").click(function(){
-    $("body").animate({left : "-400px"});
+    $("body").animate({left : "-700px"});
     $("#modalScreen").fadeIn(500);
 });
 

@@ -14,5 +14,6 @@
   "ttlKd": true,
   "soloWr": true,
   "soloRatio": true,
-  "divWr": true
+  "divWr": true,
+  "darkTheme": false
 }

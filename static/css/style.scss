@@ -2,6 +2,9 @@ $main: #f3f3f3;
 $light: #ffffff;
 $dark: #a3b1c6;
 
+$dark1: #44464E;
+$dark2: #18191C; 
+
 $wr1: #e2041b;
 $wr2: #ec6800;
 $wr3: #f7c114;
@@ -10,7 +13,6 @@ $wr5: #007bbb;
 $wr6: #674196;
 
 body{
-    background-color: $main;
     letter-spacing: 1px;
     font-size: 0.7rem;
     overflow: hidden;
@@ -29,6 +31,10 @@ body{
     transition: all 300ms 0s ease;
 }
 
+.animateSlow{
+    transition: all 1200ms 0s ease;
+}
+
 .inBattle{
     display: block !important;
 }
@@ -36,6 +42,14 @@ body{
 // Parts
 .none{
     display: none;
+}
+
+.left{
+    float: left;
+}
+
+.right{
+    float: right;
 }
 
 .radius{
@@ -78,6 +92,18 @@ body{
     box-shadow: inset 3px 3px 4px $dark, inset -4px -4px 8px $light;
 }
 
+.shadowUpMild{
+    box-shadow: 2px 2px 3px $dark, -1px -1px 5px $light;
+}
+
+.shadowDownMild{
+    box-shadow: inset 2px 2px 4px $dark, inset -1px -1px 5px $light;
+}
+
+.shadowClear{
+    box-shadow: none !important; //もっぱらダークテーマ用
+}
+
 // Classes
 .class1{
     color: $wr1;
@@ -100,6 +126,7 @@ body{
 
 // Components
 div#test{
+    background-color: $main;
     width: 100%;
     height: 100%;
     margin: 0 auto;
@@ -168,17 +195,17 @@ div#test{
                     }
                 }
             }
-            .t_115{
-                width: 115px;
+            .t_110{
+                width: 110px;
             }
             .t_20{
                 width: 20px;
             }
-            .t_60{
-                width: 60px;
+            .t_50{
+                width: 50px;
             }
             .t_nor{
-                width: 50px;
+                width: 52px;
             }
             .partition{
                 border-left: 1px $dark dotted;
@@ -216,24 +243,25 @@ div#test{
 
     div#settingScreen{
         background: $main;
-        width: 400px;
+        width: 700px;
         position: absolute;
         top: 0;
         left: 100%;
         z-index: 9999;
         height: 100%;
+        h1{
+            font-weight: normal;
+            font-size: 1.0rem;
+        }
+        h2{
+            font-weight: bold;
+            font-size: 0.7rem;
+        }
+
         div.settingBox{
             width: 350px;
-            margin: 15px auto 0;
-            padding: 10px;
-            h1{
-                font-weight: normal;
-                font-size: 1.0rem;
-            }
-            h2{
-                font-weight: bold;
-                font-size: 0.7rem;
-            }
+            margin: 15px 0 0 25px;
+            padding: 16px 10px 10px 16px;
             ul{
                 li{
                     width: 84%;
@@ -271,10 +299,30 @@ div#test{
                         }
                     }
                     .addedBase{
-                        background-color: #a0d8ef !important;
+                        background-color: #11AACC !important;
                     }
                 }
             }         
+        }
+        div.changeTheme{
+            margin: 15px 0 0 25px;
+            padding: 16px 0px 16px 16px;
+            width: 274px;
+            div.themeBox{
+                width: 113px;
+                height: 60px;
+                text-align: center;
+                line-height: 60px;
+                margin-right: 16px;
+                margin-top: 10px;
+                cursor: pointer;
+            }
+            &:first-child{
+                margin-left: 0px;
+            }
+            .selectedTheme{
+                box-shadow: inset 3px 3px 4px $dark, inset -4px -4px 8px $light;
+            }
         }
     }
     div#modalScreen{
@@ -287,6 +335,79 @@ div#test{
         z-index: 10;
         background-color: #000;
         opacity: 0.05;
+    }
+
+    //darkTheme
+    &.dark{
+        color: #ddd;
+        background-color: $dark1;
+
+        .class1{
+            color: #ce5242;
+        }
+        .class2{
+            color: #f39800;
+        }
+        .class3{
+            color: #fef263;
+        }
+        .class4{
+            color: $wr4;
+        }
+        .class5{
+            color: #2ca9e1;
+        }
+        .class6{
+            color: #a59aca;
+        }
+
+        .mildBlack{
+            color: #ddd !important;
+        }
+        div.table_wrapper{
+            background-color: $dark2;
+            table{
+                tbody{
+                    tr{
+                        background-color: $dark2;
+                        border-top: 1px #393939 dotted;
+                        &:nth-child(2n-1){
+                            background-color: #26272B;
+                        }
+                    }
+                }
+            }
+        }
+        .middleBar{
+            background-color: #182B3C;
+        }
+        div.settings{
+            background-color: $dark2;
+            &:hover{
+                background-color: $dark1;
+            }
+        }
+        div#settingScreen{
+            background-color: $dark1;
+            .settingBox{
+                background-color: $dark2;
+                .buttonBase{
+                    background-color: $dark1;
+                    .buttonToggle{
+                        background-color: #fff;
+                    }
+                }
+                .addedBase{
+                    background-color: #32AA6D !important;
+                }
+            }
+            .changeTheme{
+                background-color: $dark2;
+                .selectedTheme{
+                    background-color: $dark1;
+                }
+            }
+        }
     }
 }
 
