@@ -78,6 +78,8 @@ new Vue({
 
                                     self.allies = [];
                                     self.enemies = []; //現在の表をリセット
+                                    self.dispAllies = [];
+                                    self.dispEnemies = [];
 
                                     var listGetStats = [];
 
