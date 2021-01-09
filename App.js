@@ -52,7 +52,9 @@ app.get("/api/player", function(req, res, next){
 
         var pid = null;
         
-        if (err != null){
+        if (err){
+            player.id = null;
+            res.json(player);
             return;
         }
         if (body.status == 'error'){
@@ -88,7 +90,8 @@ app.get("/api/player", function(req, res, next){
 
             request(options_getstats, function(statserr, statsresponse, statsbody){
 
-                if (statserr != null){
+                if (statserr){
+                    res.end();
                     return;
                 }
                 // console.log(statsbody);
@@ -113,7 +116,8 @@ app.get("/api/player", function(req, res, next){
                      
                     request(options_getclan, function(clanerr, clanres, clanbody){
 
-                        if (clanerr != null){
+                        if (clanerr){
+                            res.end();
                             return;
                         }
                         
@@ -139,7 +143,9 @@ app.get("/api/player", function(req, res, next){
 app.get("/api/arena", function(req, res, next){
     // var jsonfile = "sampleData/randomSample.json";
     // var jsonfile = "sampleData/coopSample.json";
+    // var jsonfile = "sampleData/newCoop.json";
     // var jsonfile = "sampleData/senarioSample.json";
+    // var jsonfile = "sampleData/ErrortempArenaInfo.json";
     var jsonfile = wowspath + "/replays/tempArenaInfo.json";
     // console.log(jsonfile);
 
@@ -176,10 +182,12 @@ app.get("/api/ships", function(req, res, next){
 
         // console.log(body);
 
-        if (err != null){
+        if (err){
+            res.end();
             return;
         }
 
+        console.log(playerid);
         if (body.data[playerid] != null){
             var stats = body.data[playerid][0].pvp;
 
@@ -208,29 +216,45 @@ app.get("/api/ships", function(req, res, next){
             }
         }
 
-        var options_base = {
-            url: apiurl + "/wows/encyclopedia/ships/?application_id=" + apikey + "&ship_id=" + shipid + "&language=en",
-            method: "get",
-            json: true,
-        }
-
-        request(options_base, function(error, responsebase, base_body){
-
-            if (error != null){
-                return;
-            }
-
-            ships.name = base_body.data[shipid].name;
-            ships.tier = base_body.data[shipid].tier;
-            ships.nation = base_body.data[shipid].nation;
-            ships.type = base_body.data[shipid].type;
-
-            res.json(ships);
-
-        });
-       
+        res.json(ships);
         
     });
+});
+
+app.get("/api/shipWiki", function(req, res, next){
+    var shipid = req.query.shipid;
+
+    var options_base = {
+        url: apiurl + "/wows/encyclopedia/ships/?application_id=" + apikey + "&ship_id=" + shipid + "&language=en",
+        method: "get",
+        json: true,
+    }
+
+    var ships = {};
+
+    request(options_base, function(error, responsebase, base_body){
+
+        if (error){
+            res.end();
+            return;
+        }
+
+        if (base_body.data[shipid] == null){
+            ships.name = null;
+            res.json(ships);
+            return;
+        }
+
+        ships.name = base_body.data[shipid].name;
+        ships.tier = base_body.data[shipid].tier;
+        ships.nation = base_body.data[shipid].nation;
+        ships.type = base_body.data[shipid].type;
+        ships.shipId = shipid;
+
+        res.json(ships);
+
+    });
+
 });
 
 app.get("/api/rekisi", function(req, res, next){

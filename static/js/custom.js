@@ -2,10 +2,12 @@ new Vue({
     el: "#test",
     data: {
         polling: 2000,　//ポーリング間隔（ﾐﾘ秒） CPUの負荷とか考えるならおのおの調整してくれや
+        displayInterval: 125, //列の表示間隔（ﾐﾘ秒）
         inBattle: false,
-        all: [],
         allies: [],
+        dispAllies: [],
         enemies: [],
+        dispEnemies: [],
         jsonTime: "0000",
         rekisi: 10000, //10000で仮置きしているだけ. このあと正確な値を取得
         tableWidth: 1200,
@@ -73,20 +75,51 @@ new Vue({
 
                                 if (res.data.dateTime != self.jsonTime){
                                     self.jsonTime = res.data.dateTime;
-                                    var allLineup = [];
+
+                                    self.allies = [];
+                                    self.enemies = []; //現在の表をリセット
+
+                                    var listGetStats = [];
 
                                     for (var i = 0; i<Object.keys(res.data.vehicles).length; i++){
                                         if (res.data.vehicles[i].id > 0){
-                                            allLineup.push(res.data.vehicles[i]);
-                                        }                         
+                                            listGetStats.push(self.getStats(res.data.vehicles[i]));
+                                        }
+                                        
                                     }
+                                    Promise.all(listGetStats)
+                                        .then( function(){
+                                            self.sortLineup(self.allies);
+                                            self.sortLineup(self.enemies);
 
-                                    // console.log(allLineup);
+                                            // self.dispAllies = self.allies;
+                                            // self.dispEnemies = self.enemies;
 
-                                    self.sortLineup(allLineup);
+                                            var timer;
 
-                                    // console.log(allLineup);
-                                    self.getXVM(allLineup);
+                                            var alliesLength = self.allies.length;
+                                            var enemiesLength = self.enemies.length;
+
+                                            var alliesCount = 0;
+                                            var enemiesCount = 0;
+
+                                            timer = setInterval( function(){
+
+                                                if (alliesCount < alliesLength){
+                                                    self.dispAllies.push(self.allies[alliesCount]);
+                                                    alliesCount++;
+                                                }
+                                                
+                                                if (enemiesCount < enemiesLength){
+                                                    self.dispEnemies.push(self.enemies[enemiesCount]);
+                                                    enemiesCount++;
+                                                }  
+                                                
+                                                if (alliesCount == alliesLength && enemiesCount == enemiesLength){
+                                                    clearInterval(timer);
+                                                }
+                                            }, self.displayInterval)
+                                        });
                                 }
 
                             }else{
@@ -99,49 +132,49 @@ new Vue({
         
     },
     methods: {
-        getXVM(list){       
-            var self = this;
-
-            self.get1rekisi();
-
-            self.allies = [];
-            self.enemies = [];
-
-            for (var i = 0; i<list.length; i++){
-                self.getStats(list[i]);
-            }
-
-            Promise.all(list)
-                .then( function(){
-
-                });
-
-        },
         getStats(arenaData){
             var self = this;
 
             return new Promise( function(resolve, reject){
-                var playerData = self.getPlayer(arenaData.name);
+                var oneColumn = [];
 
-                playerData.then( function(playerResult){
-                    var playerid = playerResult.id.toString();
-                    var shipid = arenaData.shipId;
+                var shipWiki = self.getShipWiki(arenaData.shipId);
+                shipWiki.then( function(wikiResult){
+                    oneColumn.push(wikiResult);
 
-                    var shipData = self.getPlayerShip(playerid, shipid);
+                    console.log(wikiResult);
 
-                    shipData.then( function(shipResult){
-                        var temp = [playerResult, shipResult];
+                    if (wikiResult.name == null){
+                        console.log("ahi");
+                        resolve();
+                        return;
+                    }
 
-                        var relation = arenaData.relation;
-                        if (relation == 0 || relation == 1){
-                            self.allies.push(temp);                   
+                    var player = self.getPlayer(arenaData.name);
+                    player.then( function(playerResult){
+                        oneColumn.push(playerResult);
+
+                        if (playerResult.id != null){
+                            var playerid = playerResult.id.toString();
                         }else{
-                            self.enemies.push(temp);
+                            resolve();
+                            return;
                         }
-                        // console.log(temp);
-                        resolve("done");
+                        
+                        var ship = self.getPlayerShip(playerid, arenaData.shipId);
+                        ship.then( function(shipResult){
+                            oneColumn.push(shipResult);
+
+                            if (arenaData.relation == 0 || arenaData.relation == 1){
+                                self.allies.push(oneColumn);
+                            }else{
+                                self.enemies.push(oneColumn);
+                            }
+                            resolve();
+                        })
                     })
-                })                
+
+                })             
             })
         },
         getPlayer(name){
@@ -179,15 +212,68 @@ new Vue({
                     })
             });
         },
+        getShipWiki(shipid){
+            return new Promise( function(resolve, reject){
+                axios
+                    .get("http://localhost:10080/api/shipWiki", {
+                        params: {
+                            shipid: shipid
+                        }
+                    })
+                    .then( function(res){
+                        resolve(res.data);
+                    })
+                    .catch( function(err){
+                        console.log("in getShipWiki()" + err);
+                    })
+            })
+        },
         sortLineup(list){
+            var self = this;
+
             list.sort( function(val1, val2){
-                var a = ((val1.shipId % 1048576)-(val1.shipId / 1048576));
-                var b = ((val2.shipId % 1048576)-(val2.shipId / 1048576));
-                if( a < b ) {
-                    return 1;
-                } else {
-                    return -1;
+
+                // ship type
+                var type1 = self.getClassNumber(val1[0].type);
+                var type2 = self.getClassNumber(val2[0].type);
+                if( type1 < type2 ) return 1;
+                if( type1 > type2 ) return -1;
+
+                // tier高い順
+                var tier1 = val1[0].tier;
+                var tier2 = val2[0].tier;
+                if( tier1 < tier2 ) return 1;
+                if( tier1 > tier2 ) return -1;
+
+                // nation
+                var nation1 = self.getNationKey(val1[0].nation);
+                var nation2 = self.getNationKey(val2[0].nation);
+                if( nation1 > nation2 ) return 1;
+                if( nation1 < nation2 ) return -1;
+
+                // shipId大きい順
+                if( val1[0].shipId < val2[0].shipId ) return 1;
+                if( val1[0].shipId > val2[0].shipId ) return -1;
+                
+                // clan+nameアルファベット順？
+                var name1;
+                var name2;
+                if (val1[1].clantag != null){
+                    name1 = val1[1].clantag + val1[1].name;
+                }else{
+                    name1 = val1[1].name;
                 }
+
+                if (val2[1].clantag != null){
+                    name2 = val2[1].clantag + val2[1].name;
+                }else{
+                    name2 = val2[1].name;
+                }
+
+                if( name1 > name2 ) return 1;
+                if( name1 < name2 ) return -1;
+
+                return 0;
             });
         },
         getColorWR: function(value){
@@ -223,16 +309,27 @@ new Vue({
             }
         },
         getClassNumber(value){
-            if (value == "Battleship"){
-                return 8;
-            }else if (value == "Cruiser"){
-                return 6;
-            }else if (value == "Destroyer"){
-                return 4;
-            }else if (value == "AirCarrier"){
-                return 10;
-            }else if (value == "Submarine"){
-                return 2;
+            var types = [
+                ["Battleship", 8], ["Cruiser", 6], ["Destroyer", 4], ["AirCarrier", 10], ["Submarine", 2]
+            ]
+
+            for (var i = 0; i<types.length; i++){
+                if (value == types[i][0]){
+                    return types[i][1];
+                }
+            }
+        },
+        getNationKey(value){
+            var nations = [
+                ["japan", "J"], ["usa", "A"], ["ussr", "R"], ["germany", "G"],
+                ["uk", "B"], ["france", "F"], ["europe", "W"], ["pan_asia", "Z"],
+                ["italy", "I"], ["pan_america", "V"], ["commonwealth", "U"]
+            ];
+            
+            for (var i=0; i<nations.length ; i++) {
+                if (value == nations[i][0]) {
+                    return nations[i][1];
+                }
             }
         },
         tellHidden: function(wr, flag){
@@ -332,7 +429,7 @@ new Vue({
                     darkTheme: self.darkTheme
                 })
                 .then( function(){
-                    console.log("Saved")
+                    console.log("Settings saved")
                 })
         },
         save1rekisi(){
@@ -342,7 +439,7 @@ new Vue({
                     rekisi: self.rekisi
                 })
                 .then( function(){
-                    console.log("Saved 1rekisi");
+                    console.log("1rekisi saved");
                 })
         },
         changeThemeToLight(){

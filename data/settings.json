@@ -7,7 +7,7 @@
   "shipKd": true,
   "shipGun": false,
   "shipTorp": false,
-  "shipAa": false,
+  "shipAa": true,
   "ttlBattles": true,
   "ttlDmg": true,
   "ttlKill": true,

@@ -60,33 +60,33 @@
                 </thead>
                 <tbody class="radius">
 
-                    <tr v-for="stats in allies">
+                    <tr v-for="stats in dispAllies">
                         
-                        <td>{{ stats[0].clantag }}</td>
-                        <td>{{ stats[0].name }}</td>
-                        <td>{{ stats[1].tier }}</td>
-                        <td class="no-spacing">{{ stats[1].nation }}</td>
-                        <td>{{ getClassKanji(stats[1].type) }}</td>
-                        <td class="bold mildBlack t_name">{{ stats[1].name }}</td>
+                        <td>{{ stats[1].clantag }}</td>
+                        <td>{{ stats[1].name }}</td>
+                        <td>{{ stats[0].tier }}</td>
+                        <td class="no-spacing">{{ stats[0].nation }}</td>
+                        <td>{{ getClassKanji(stats[0].type) }}</td>
+                        <td class="bold mildBlack t_name">{{ stats[0].name }}</td>
 
-                        <td v-if="settings[0]" :class="getColorWR(stats[1].wr)" class="bold">{{ stats[1].wr }}</td>
-                        <td v-if="settings[1]" class="textRight">{{ stats[1].battles }}</td>
-                        <td v-if="settings[2]" class="textRight">{{ stats[1].avgdmg }}</td>
-                        <td v-if="settings[3]" >{{ stats[1].avgkill }}</td>
-                        <td v-if="settings[4]" :class="checkBot(stats[1].survive, stats[1].battles)">{{ stats[1].survive }}</td>
-                        <td v-if="settings[5]" >{{ stats[1].killdeath }}</td>
-                        <td v-if="settings[6]" :class="checkShirogane(stats[1].gunaim, stats[1].type)">{{ stats[1].gunaim }}</td>
-                        <td v-if="settings[7]" >{{ stats[1].torpaim }}</td>
-                        <td v-if="settings[8]" >{{ stats[1].avgdown }}</td>
+                        <td v-if="settings[0]" :class="getColorWR(stats[2].wr)" class="bold">{{ stats[2].wr }}</td>
+                        <td v-if="settings[1]" class="textRight">{{ stats[2].battles }}</td>
+                        <td v-if="settings[2]" class="textRight">{{ stats[2].avgdmg }}</td>
+                        <td v-if="settings[3]" >{{ stats[2].avgkill }}</td>
+                        <td v-if="settings[4]" :class="checkBot(stats[2].survive, stats[2].battles)">{{ stats[2].survive }}</td>
+                        <td v-if="settings[5]" >{{ stats[2].killdeath }}</td>
+                        <td v-if="settings[6]" :class="checkShirogane(stats[2].gunaim, stats[1].type)">{{ stats[2].gunaim }}</td>
+                        <td v-if="settings[7]" >{{ stats[2].torpaim }}</td>
+                        <td v-if="settings[8]" >{{ stats[2].avgdown }}</td>
 
-                        <td :class="getColorWR(stats[0].totalwr)" class="bold">{{ tellHidden(stats[0].totalwr, stats[0].hidden) }}</td>
-                        <td v-if="settings[9]" :class="compareRekisi(stats[0].battles)"  class="textRight">{{ stats[0].battles }}</td>
-                        <td v-if="settings[10]"  class="textRight">{{ stats[0].avgdmg }}</td>
-                        <td v-if="settings[11]" >{{ stats[0].avgkill }}</td>
-                        <td v-if="settings[12]" >{{ stats[0].killdeath }}</td>
-                        <td v-if="settings[13]" :class="getColorWR(stats[0].solowr)" class="bold">{{ stats[0].solowr }}</td>
-                        <td v-if="settings[14]" :class="inSoloRatio(stats[0].soloratio)">{{ stats[0].soloratio }}</td>
-                        <td v-if="settings[15]" :class="getColorWR(stats[0].div3wr)" class="bold">{{ stats[0].div3wr }}</td>
+                        <td :class="getColorWR(stats[1].totalwr)" class="bold">{{ tellHidden(stats[1].totalwr, stats[1].hidden) }}</td>
+                        <td v-if="settings[9]" :class="compareRekisi(stats[1].battles)"  class="textRight">{{ stats[1].battles }}</td>
+                        <td v-if="settings[10]"  class="textRight">{{ stats[1].avgdmg }}</td>
+                        <td v-if="settings[11]" >{{ stats[1].avgkill }}</td>
+                        <td v-if="settings[12]" >{{ stats[1].killdeath }}</td>
+                        <td v-if="settings[13]" :class="getColorWR(stats[1].solowr)" class="bold">{{ stats[1].solowr }}</td>
+                        <td v-if="settings[14]" :class="inSoloRatio(stats[1].soloratio)">{{ stats[1].soloratio }}</td>
+                        <td v-if="settings[15]" :class="getColorWR(stats[1].div3wr)" class="bold">{{ stats[1].div3wr }}</td>
 
                     </tr>
 
@@ -130,33 +130,33 @@
                 </thead>
                 <tbody class="radius">
 
-                    <tr v-for="stats in enemies">
+                    <tr v-for="stats in dispEnemies">
                                                 
-                        <td>{{ stats[0].clantag }}</td>
-                        <td>{{ stats[0].name }}</td>
-                        <td>{{ stats[1].tier }}</td>
-                        <td class="no-spacing">{{ stats[1].nation }}</td>
-                        <td>{{ getClassKanji(stats[1].type) }}</td>
-                        <td class="bold mildBlack t_name">{{ stats[1].name }}</td>
+                        <td>{{ stats[1].clantag }}</td>
+                        <td>{{ stats[1].name }}</td>
+                        <td>{{ stats[0].tier }}</td>
+                        <td class="no-spacing">{{ stats[0].nation }}</td>
+                        <td>{{ getClassKanji(stats[0].type) }}</td>
+                        <td class="bold mildBlack t_name">{{ stats[0].name }}</td>
 
-                        <td v-if="settings[0]" :class="getColorWR(stats[1].wr)" class="bold">{{ stats[1].wr }}</td>
-                        <td v-if="settings[1]" class="textRight">{{ stats[1].battles }}</td>
-                        <td v-if="settings[2]" class="textRight">{{ stats[1].avgdmg }}</td>
-                        <td v-if="settings[3]" >{{ stats[1].avgkill }}</td>
-                        <td v-if="settings[4]" :class="checkBot(stats[1].survive, stats[1].battles)">{{ stats[1].survive }}</td>
-                        <td v-if="settings[5]" >{{ stats[1].killdeath }}</td>
-                        <td v-if="settings[6]" :class="checkShirogane(stats[1].gunaim, stats[1].type)">{{ stats[1].gunaim }}</td>
-                        <td v-if="settings[7]" >{{ stats[1].torpaim }}</td>
-                        <td v-if="settings[8]" >{{ stats[1].avgdown }}</td>
+                        <td v-if="settings[0]" :class="getColorWR(stats[2].wr)" class="bold">{{ stats[2].wr }}</td>
+                        <td v-if="settings[1]" class="textRight">{{ stats[2].battles }}</td>
+                        <td v-if="settings[2]" class="textRight">{{ stats[2].avgdmg }}</td>
+                        <td v-if="settings[3]" >{{ stats[2].avgkill }}</td>
+                        <td v-if="settings[4]" :class="checkBot(stats[2].survive, stats[2].battles)">{{ stats[2].survive }}</td>
+                        <td v-if="settings[5]" >{{ stats[2].killdeath }}</td>
+                        <td v-if="settings[6]" :class="checkShirogane(stats[2].gunaim, stats[1].type)">{{ stats[2].gunaim }}</td>
+                        <td v-if="settings[7]" >{{ stats[2].torpaim }}</td>
+                        <td v-if="settings[8]" >{{ stats[2].avgdown }}</td>
 
-                        <td :class="getColorWR(stats[0].totalwr)" class="bold">{{ tellHidden(stats[0].totalwr, stats[0].hidden) }}</td>
-                        <td v-if="settings[9]" :class="compareRekisi(stats[0].battles)"  class="textRight">{{ stats[0].battles }}</td>
-                        <td v-if="settings[10]"  class="textRight">{{ stats[0].avgdmg }}</td>
-                        <td v-if="settings[11]" >{{ stats[0].avgkill }}</td>
-                        <td v-if="settings[12]" >{{ stats[0].killdeath }}</td>
-                        <td v-if="settings[13]" :class="getColorWR(stats[0].solowr)" class="bold">{{ stats[0].solowr }}</td>
-                        <td v-if="settings[14]" :class="inSoloRatio(stats[0].soloratio)">{{ stats[0].soloratio }}</td>
-                        <td v-if="settings[15]" :class="getColorWR(stats[0].div3wr)" class="bold">{{ stats[0].div3wr }}</td>                        
+                        <td :class="getColorWR(stats[1].totalwr)" class="bold">{{ tellHidden(stats[1].totalwr, stats[1].hidden) }}</td>
+                        <td v-if="settings[9]" :class="compareRekisi(stats[1].battles)"  class="textRight">{{ stats[1].battles }}</td>
+                        <td v-if="settings[10]"  class="textRight">{{ stats[1].avgdmg }}</td>
+                        <td v-if="settings[11]" >{{ stats[1].avgkill }}</td>
+                        <td v-if="settings[12]" >{{ stats[1].killdeath }}</td>
+                        <td v-if="settings[13]" :class="getColorWR(stats[1].solowr)" class="bold">{{ stats[1].solowr }}</td>
+                        <td v-if="settings[14]" :class="inSoloRatio(stats[1].soloratio)">{{ stats[1].soloratio }}</td>
+                        <td v-if="settings[15]" :class="getColorWR(stats[1].div3wr)" class="bold">{{ stats[1].div3wr }}</td>
                     </tr>
                 </tbody>
             </table>
