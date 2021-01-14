@@ -34,7 +34,7 @@
                         <th scope="col" class="t_50">Clan</th>
                         <th scope="col" class="t_110 bold mildBlack">Player <i class="fas fa-user mildGray"></i></th>
                         <th scope="col" class="t_20">T</th>
-                        <th scope="col" class="t_nor"></th>
+                        <th v-if="settings[16]" scope="col" class="t_nor"></th>
                         <th scope="col" class="t_20"></th>
                         <th scope="col" class="t_110 bold mildBlack">Ship <i class="fas fa-ship mildGray"></i></th>
 
@@ -65,7 +65,7 @@
                         <td>{{ stats[1].clantag }}</td>
                         <td>{{ stats[1].name }}</td>
                         <td>{{ stats[0].tier }}</td>
-                        <td class="no-spacing">{{ stats[0].nation }}</td>
+                        <td v-if="settings[16]" class="no-spacing">{{ stats[0].nation }}</td>
                         <td>{{ getClassKanji(stats[0].type) }}</td>
                         <td class="bold mildBlack t_name">{{ stats[0].name }}</td>
 
@@ -105,7 +105,7 @@
                     <th scope="col" class="t_50">Clan</th>
                     <th scope="col" class="t_110 bold mildBlack">Player <i class="fas fa-user mildGray"></i></th>
                     <th scope="col" class="t_20">T</th>
-                    <th scope="col" class="t_nor"></th>
+                    <th v-if="settings[16]" scope="col" class="t_nor"></th>
                     <th scope="col" class="t_20"></th>
                     <th scope="col" class="t_110 bold mildBlack">Ship <i class="fas fa-ship mildGray"></i></th>
 
@@ -135,7 +135,7 @@
                         <td>{{ stats[1].clantag }}</td>
                         <td>{{ stats[1].name }}</td>
                         <td>{{ stats[0].tier }}</td>
-                        <td class="no-spacing">{{ stats[0].nation }}</td>
+                        <td v-if="settings[16]"  class="no-spacing">{{ stats[0].nation }}</td>
                         <td>{{ getClassKanji(stats[0].type) }}</td>
                         <td class="bold mildBlack t_name">{{ stats[0].name }}</td>
 
@@ -168,10 +168,23 @@
 
         <div id="settingScreen" class="cf">
             <div class="settingBox left shadowUp radius" :class='{"shadowClear" : darkTheme}'>
-                <!-- <h1>Settings</h1> -->
                     <h2>項目</h2>
 
                         <ul>
+
+                            <li class="cf">
+                                <div class="columnDetail">
+                                    Nation
+                                    <span>
+                                        艦の国籍
+                                    </span>
+                                </div>
+
+                                <div class="buttonBase shadowDownMild animate" v-on:click="settingButton(16)" :class="{'addedBase' : settings[16], 'shadowClear' : darkTheme}">
+                                    <div class="buttonToggle radiusCir shadowUpMild animate" :class='{"addedButton" : settings[16], "shadowClear" : darkTheme}'></div>
+                                </div>
+                            </li>
+
                             <li class="cf">
                                 <div class="columnDetail">
                                     shipWR

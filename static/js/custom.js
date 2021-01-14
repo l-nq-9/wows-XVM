@@ -30,6 +30,7 @@ new Vue({
             true, //13soloWr
             true, //14soloRatio
             true, //15divWr
+            true, //16shipNation
         ]
     },
     mounted: function(){
@@ -55,7 +56,7 @@ new Vue({
                 self.settings.splice(13, 1, res.data.soloWr);
                 self.settings.splice(14, 1, res.data.soloRatio);
                 self.settings.splice(15, 1, res.data.divWr);
-                self.settings.splice(16, 1, res.data.darkTheme);
+                self.settings.splice(16, 1, res.data.shipNation);
                 self.darkTheme = res.data.darkTheme;
             });
 
@@ -399,13 +400,13 @@ new Vue({
         decideTableWidth(){
             var counter = 0;
 
-            for (var i = 0; i<=15; i++){
+            for (var i = 0; i<=16; i++){
                 if (this.settings[i]){
                     counter++;
                 }
             }
 
-            this.tableWidth = 460 + 52*counter;
+            this.tableWidth = 408 + 52*counter;
         },
         saveSettings(){
             var self = this;
@@ -428,6 +429,7 @@ new Vue({
                     soloWr: self.settings[13],
                     soloRatio: self.settings[14],
                     divWr: self.settings[15],
+                    shipNation: self.settings[16],
                     darkTheme: self.darkTheme
                 })
                 .then( function(){

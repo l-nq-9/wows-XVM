@@ -2,7 +2,7 @@
   "shipWr": true,
   "shipBattles": true,
   "shipDmg": true,
-  "shipKill": true,
+  "shipKill": false,
   "shipSurvive": false,
   "shipKd": true,
   "shipGun": false,
@@ -15,5 +15,6 @@
   "soloWr": true,
   "soloRatio": true,
   "divWr": true,
-  "darkTheme": false
+  "darkTheme": true,
+  "shipNation": true
 }

@@ -327,6 +327,7 @@ app.put("/api/settings", function(req, res, next){
     settingJson.soloWr = req.body.soloWr;
     settingJson.soloRatio = req.body.soloRatio;
     settingJson.divWr = req.body.divWr;
+    settingJson.shipNation = req.body.shipNation;
     settingJson.darkTheme = req.body.darkTheme;
 
     fs.writeFile(settingFile, JSON.stringify(settingJson, null, 2), function writeJSON(err) {
