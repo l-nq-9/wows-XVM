@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 // static endpoint
 app.use(express.static(__dirname + '/static'));
 
-var port = 10080;
+var port = 10180;
 var server = app.listen(port, function(){
     console.log("XVM is listening to PORT:" + server.address().port);
 });
