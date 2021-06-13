@@ -37,7 +37,7 @@ new Vue({
         var self = this;
 
         axios
-            .get("http://localhost:10080/api/settings")
+            .get("http://localhost:10180/api/settings")
             .then( function(res){
 
                 self.settings.splice(0, 1, res.data.shipWr);
@@ -69,7 +69,7 @@ new Vue({
                     var self = this;
                     
                     axios
-                        .get("http://localhost:10080/api/arena")
+                        .get("http://localhost:10180/api/arena")
                         .then(function (res){
                             if (res.data.matchGroup != "notInBattle"){
                                 self.inBattle = true;
@@ -184,7 +184,7 @@ new Vue({
             // var self = this;
             return new Promise( function(resolve, reject){
                 axios
-                    .get("http://localhost:10080/api/player", {
+                    .get("http://localhost:10180/api/player", {
                         params: {
                             name: name
                         }
@@ -201,7 +201,7 @@ new Vue({
         getPlayerShip(playerid, shipid){
             return new Promise( function(resolve, reject){
                 axios
-                    .get("http://localhost:10080/api/ships", {
+                    .get("http://localhost:10180/api/ships", {
                         params: {
                             playerid: playerid,
                             shipid: shipid
@@ -218,7 +218,7 @@ new Vue({
         getShipWiki(shipid){
             return new Promise( function(resolve, reject){
                 axios
-                    .get("http://localhost:10080/api/shipWiki", {
+                    .get("http://localhost:10180/api/shipWiki", {
                         params: {
                             shipid: shipid
                         }
@@ -355,7 +355,7 @@ new Vue({
             var self = this;
 
             axios
-                .get("http://localhost:10080/api/rekisi")
+                .get("http://localhost:10180/api/rekisi")
                 .then( function(res){
                     self.rekisi = res.data.battles;
                     self.save1rekisi();
@@ -412,7 +412,7 @@ new Vue({
             var self = this;
             
             axios
-                .put("http://localhost:10080/api/settings", {
+                .put("http://localhost:10180/api/settings", {
                     shipWr: self.settings[0],
                     shipBattles: self.settings[1],
                     shipDmg: self.settings[2],
@@ -439,7 +439,7 @@ new Vue({
         save1rekisi(){
             var self = this;
             axios
-                .put("http://localhost:10080/api/rekisi", {
+                .put("http://localhost:10180/api/rekisi", {
                     rekisi: self.rekisi
                 })
                 .then( function(){
