@@ -1,8 +1,9 @@
-new Vue({
+var vue = new Vue({
     el: "#test",
     data: {
-        polling: 2000,　//ポーリング間隔（ﾐﾘ秒） CPUの負荷とか考えるならおのおの調整してくれや
-        displayInterval: 125, //列の表示間隔（ﾐﾘ秒）
+        xvmport: 10180,
+        polling: 1200,　//ポーリング間隔（ﾐﾘ秒） CPUの負荷とか考えるならおのおの調整してくれや
+        displayInterval: 120, //列の表示間隔（ﾐﾘ秒）
         inBattle: false,
         allies: [],
         dispAllies: [],
@@ -37,7 +38,7 @@ new Vue({
         var self = this;
 
         axios
-            .get("http://localhost:10180/api/settings")
+            .get("http://localhost:" + xvmport + "/api/settings")
             .then( function(res){
 
                 self.settings.splice(0, 1, res.data.shipWr);
@@ -69,7 +70,7 @@ new Vue({
                     var self = this;
                     
                     axios
-                        .get("http://localhost:10180/api/arena")
+                        .get("http://localhost:" + xvmport + "/api/arena")
                         .then(function (res){
                             if (res.data.matchGroup != "notInBattle"){
                                 self.inBattle = true;
@@ -94,9 +95,6 @@ new Vue({
                                         .then( function(){
                                             self.sortLineup(self.allies);
                                             self.sortLineup(self.enemies);
-
-                                            // self.dispAllies = self.allies;
-                                            // self.dispEnemies = self.enemies;
 
                                             var timer;
 
@@ -180,11 +178,11 @@ new Vue({
                 })             
             })
         },
+
         getPlayer(name){
-            // var self = this;
             return new Promise( function(resolve, reject){
                 axios
-                    .get("http://localhost:10180/api/player", {
+                    .get("http://localhost:" + xvmport + "/api/player", {
                         params: {
                             name: name
                         }
@@ -198,10 +196,11 @@ new Vue({
                     })
             });
         },
+
         getPlayerShip(playerid, shipid){
             return new Promise( function(resolve, reject){
                 axios
-                    .get("http://localhost:10180/api/ships", {
+                    .get("http://localhost:" + xvmport + "/api/ships", {
                         params: {
                             playerid: playerid,
                             shipid: shipid
@@ -215,10 +214,11 @@ new Vue({
                     })
             });
         },
+
         getShipWiki(shipid){
             return new Promise( function(resolve, reject){
                 axios
-                    .get("http://localhost:10180/api/shipWiki", {
+                    .get("http://localhost:" + xvmport + "/api/shipWiki", {
                         params: {
                             shipid: shipid
                         }
@@ -231,6 +231,7 @@ new Vue({
                     })
             })
         },
+
         sortLineup(list){
             var self = this;
 
@@ -279,6 +280,7 @@ new Vue({
                 return 0;
             });
         },
+
         getColorWR: function(value){
             if (value != null){
                 if	(value < 47) {
@@ -298,6 +300,7 @@ new Vue({
                 return 'hiddenAccount';
             }
         },
+
         getClassKanji: function(value){
             if (value == "Battleship"){
                 return "戦";
@@ -311,30 +314,32 @@ new Vue({
                 return "潜";
             }
         },
+
         getClassNumber(value){
             var types = [
                 ["Battleship", 8], ["Cruiser", 6], ["Destroyer", 4], ["AirCarrier", 10], ["Submarine", 2]
             ]
-
-            for (var i = 0; i<types.length; i++){
+            for (var i of types){
                 if (value == types[i][0]){
                     return types[i][1];
                 }
             }
         },
+
         getNationKey(value){
             var nations = [
                 ["japan", "J"], ["usa", "A"], ["ussr", "R"], ["germany", "G"],
                 ["uk", "B"], ["france", "F"], ["europe", "W"], ["pan_asia", "Z"],
-                ["italy", "I"], ["pan_america", "V"], ["commonwealth", "U"]
+                ["italy", "I"], ["pan_america", "V"], ["commonwealth", "U"], ["netherlands", "N"],
+                ["spain", "S"]
             ];
-            
-            for (var i=0; i<nations.length ; i++) {
+            for (var i of nations) {
                 if (value == nations[i][0]) {
                     return nations[i][1];
                 }
             }
         },
+
         tellHidden: function(wr, flag){
             if (flag != "yes"){
                 return wr;
@@ -342,6 +347,7 @@ new Vue({
                 return "Hidden";
             }
         },
+
         inSoloRatio: function(value){
             if (value == 100){
                 return "bold";
@@ -351,17 +357,19 @@ new Vue({
                 return;
             }
         },
+
         get1rekisi(){
             var self = this;
 
             axios
-                .get("http://localhost:10180/api/rekisi")
+                .get("http://localhost:" + xvmport + "/api/rekisi")
                 .then( function(res){
                     self.rekisi = res.data.battles;
                     self.save1rekisi();
                 })
 
         },
+
         compareRekisi: function(battles){
             if (battles >= this.rekisi){
                 return "bold under";
@@ -369,6 +377,7 @@ new Vue({
                 return;
             }
         },
+
         checkShirogane: function(aim, shipClass){
             if (shipClass == "Battleship" && aim >= 32.5){
                 return "bold under";
@@ -380,6 +389,7 @@ new Vue({
                 return;
             }
         },
+
         checkBot: function(ratio, battles){
             if (battles >= 16 && ratio <= 12.5){
                 return "bold under";
@@ -387,6 +397,7 @@ new Vue({
                 return;
             }
         },
+
         showBattleStatus: function(){
             if (this.inBattle){
                 return "In Battle!";
@@ -394,9 +405,11 @@ new Vue({
                 return "Not in Battle";
             }
         },
+
         settingButton(index){
             this.settings.splice(index, 1, !this.settings[index]);
         },
+
         decideTableWidth(){
             var counter = 0;
 
@@ -408,11 +421,12 @@ new Vue({
 
             this.tableWidth = 408 + 52*counter;
         },
+
         saveSettings(){
             var self = this;
             
             axios
-                .put("http://localhost:10180/api/settings", {
+                .put("http://localhost:" + xvmport + "/api/settings", {
                     shipWr: self.settings[0],
                     shipBattles: self.settings[1],
                     shipDmg: self.settings[2],
@@ -436,19 +450,22 @@ new Vue({
                     console.log("Settings saved")
                 })
         },
+
         save1rekisi(){
             var self = this;
             axios
-                .put("http://localhost:10180/api/rekisi", {
+                .put("http://localhost:" + xvmport + "/api/rekisi", {
                     rekisi: self.rekisi
                 })
                 .then( function(){
                     console.log("1rekisi saved");
                 })
         },
+
         changeThemeToLight(){
             this.darkTheme = false;
         },
+
         changeThemeToDark(){
             this.darkTheme = true;
         }

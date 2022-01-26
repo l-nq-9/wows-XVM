@@ -20,9 +20,36 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/static'));
 
 var port = 10180;
-var server = app.listen(port, function(){
-    console.log("XVM is listening to PORT:" + server.address().port);
-});
+var total_pages = 6;
+var server = app.listen(
+    port, async function(){
+        console.log(
+            "XVM is listening to PORT:" + server.address().port
+        );
+        for (let page = 1; page<=total_pages; page++){
+            console.log("A" + page);
+            await getShipWikiJson(page);
+            console.log("B" + page);
+        }
+        console.log("C");
+    }
+);
+
+async function getShipWikiJson(page){ // store shipWikiJson1-n
+    request.get(
+        {
+            uri: apiurl + "/wows/encyclopedia/ships/?application_id=" + apikey + "&page_no=" + page + "&fields=name%2C+tier%2C+nation%2C+type%2C+is_premium%2C+is_special%2C+default_profile.concealment.detect_distance_by_ship%2C+mod_slots&language=en",
+            json: true
+        }, function(err, req, data){
+            fs.writeFile('data/shipwiki_'+ page +'.json', JSON.stringify(data), function writeJson(error){
+                if (error) return console.log(error);
+                console.log("AA" + page);
+                return true;
+            });
+        }        
+    );
+}
+
 
 function fixing00(num){
     return Math.round(num * 100) / 100;
@@ -38,7 +65,6 @@ function fixing(num){
 
 app.get("/api/player", function(req, res, next){
     var name = req.query.name;
-    // console.log(name);
 
     var options_getid = {
         url: apiurl + "/wows/account/list/?application_id=" + apikey + "&search=" + name,
@@ -60,7 +86,7 @@ app.get("/api/player", function(req, res, next){
         if (body.status == 'error'){
             player.status = 'error';
             player.name = body.error.value;
-            console.log(body.error.value);
+            console.log("body.error.value" + body.error.value);
             res.json(player);
             return;
         }
@@ -94,7 +120,6 @@ app.get("/api/player", function(req, res, next){
                     res.end();
                     return;
                 }
-                // console.log(statsbody);
 
                 if (statsbody.status != "error"){
                     var stats = statsbody.data[pid];
@@ -134,41 +159,38 @@ app.get("/api/player", function(req, res, next){
                 }    
             });
       
-        } //if (player.id != 0){
-
+        }
     });
-
 });
 
 app.get("/api/arena", function(req, res, next){
-    // var jsonfile = "sampleData/randomSample.json";
-    // var jsonfile = "sampleData/coopSample.json";
-    // var jsonfile = "sampleData/newCoop.json";
-    // var jsonfile = "sampleData/senarioSample.json";
-    // var jsonfile = "sampleData/ErrortempArenaInfo.json";
-    var jsonfile = wowspath + "/replays/tempArenaInfo.json";
-    // console.log(jsonfile);
+    // let jsonfile = "sampleData/randomSample.json";
+    // let jsonfile = "sampleData/coopSample.json";
+    // let jsonfile = "sampleData/newCoop.json";
+    // let jsonfile = "sampleData/senarioSample.json";
+    // let jsonfile = "sampleData/ErrortempArenaInfo.json";
+    // let jsonfile = wowspath + "/replays/tempArenaInfo.json";
+    let jsonfile = "sampleData/sensuikan.json";
 
-    var arenajson = {};
+    let arenajson = {};
     try {
         arenajson = JSON.parse(fs.readFileSync(jsonfile, 'utf8'));
     }catch{
         arenajson.matchGroup = "notInBattle";
     }
     res.json(arenajson);
-    // console.log(arenajson);
 });
 
 app.get("/api/ships", function(req, res, next){
-    var playerid = req.query.playerid;
-    var shipid = req.query.shipid;
+    let playerid = req.query.playerid;
+    let shipid = req.query.shipid;
 
-    console.log("playerId : " + playerid);
-    console.log("shipId : " + shipid);
+    console.log("playerId in /api/ships : " + playerid);
+    console.log("shipId in /api/ships : " + shipid);
     console.log();
 
-    // var playerid = "2013880375"; //l_nq__9
-    // var shipid = "4181669712"; //Richelieu
+    // let playerid = "2013880375"; //l_nq__9
+    // let shipid = "4181669712"; //Richelieu
 
     var options = {
         url: apiurl + "/wows/ships/stats/?application_id=" + apikey + "&account_id=" + playerid + "&ship_id=" + shipid,
@@ -180,14 +202,11 @@ app.get("/api/ships", function(req, res, next){
 
     request(options, function(err, response, body){
 
-        // console.log(body);
-
         if (err){
             res.end();
             return;
         }
 
-        console.log(playerid);
         if (body.data[playerid] != null){
             var stats = body.data[playerid][0].pvp;
 
@@ -224,36 +243,30 @@ app.get("/api/ships", function(req, res, next){
 app.get("/api/shipWiki", function(req, res, next){
     var shipid = req.query.shipid;
 
-    var options_base = {
-        url: apiurl + "/wows/encyclopedia/ships/?application_id=" + apikey + "&ship_id=" + shipid + "&language=en",
-        method: "get",
-        json: true,
-    }
-
     var ships = {};
 
-    request(options_base, function(error, responsebase, base_body){
+    var wikifile = "data/shipwiki.json";
 
-        if (error){
-            res.end();
-            return;
-        }
+    var shipwiki = {};
+    try{
+        shipwiki = JSON.parse(fs.readFileSync(wikifile, 'utf8'));
+    }catch{
 
-        if (base_body.data[shipid] == null){
-            ships.name = null;
-            res.json(ships);
-            return;
-        }
+    }
 
-        ships.name = base_body.data[shipid].name;
-        ships.tier = base_body.data[shipid].tier;
-        ships.nation = base_body.data[shipid].nation;
-        ships.type = base_body.data[shipid].type;
-        ships.shipId = shipid;
+    ships.name = shipwiki.data[shipid].name;
+    ships.tier = shipwiki.data[shipid].tier;
+    ships.nation = shipwiki.data[shipid].nation;
+    ships.type = shipwiki.data[shipid].type;
+    let default_conceal = shipwiki.data[shipid].default_profile.concealment.detect_distance_by_ship
+    let full_conceal = default_conceal - default_conceal*0.1 - default_conceal*0.03;
+    if (shipwiki.data[shipid].mod_slots >= 5){
+        full_conceal = full_conceal - default_conceal*0.1;
+    }
+    ships.fullconceal = fixing0(full_conceal);
+    ships.shipId = shipid;
 
-        res.json(ships);
-
-    });
+    res.json(ships);
 
 });
 
@@ -305,7 +318,6 @@ app.get("/api/settings", function(req, res, next){
 });
 
 app.put("/api/settings", function(req, res, next){
-    // console.log(req.body);
 
     var settingFile = "data/settings.json";
 
@@ -336,6 +348,3 @@ app.put("/api/settings", function(req, res, next){
 
     res.end();
 });
-// var apikey = "";
-// var apiurl = "https://api.worldofwarships.asia";
-// var wowspath = "C:/Games/World_of_Warships_Asia";
